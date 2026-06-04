@@ -146,6 +146,23 @@ td.naam { font-weight: 500; max-width: 220px; }
 .section-title { font-size: 0.67rem; font-weight: 700; color: var(--groen-donker); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 .section-title::after { content: ''; flex: 1; height: 1px; background: var(--grijs-licht); }
 
+/* LINKED ITEMS IN DETAIL */
+.linked-block { margin-top: 10px; border-top: 1px dashed var(--grijs-mid); padding-top: 10px; }
+.linked-block-title { font-size: 0.67rem; font-weight: 700; color: var(--groen-donker); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.linked-cards { display: flex; flex-direction: column; gap: 6px; }
+.linked-card { background: white; border: 1px solid var(--grijs-licht); border-radius: 7px; padding: 8px 12px; font-size: 0.75rem; display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
+.linked-card.type-risico  { border-left: 3px solid var(--rood); }
+.linked-card.type-afh     { border-left: 3px solid var(--blauw); }
+.linked-card.type-besluit { border-left: 3px solid var(--geel); }
+.linked-card .lc-nr  { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--grijs-donker); font-weight: 700; white-space: nowrap; }
+.linked-card .lc-desc { color: var(--tekst); line-height: 1.45; }
+.linked-card .lc-meta { grid-column: 2; font-size: 0.68rem; color: #888; }
+.kans-badge { display:inline-block; padding:1px 6px; border-radius:10px; font-size:0.64rem; font-weight:700; }
+.kans-zeerhoog { background:#fde8e6; color:#c0392b; }
+.kans-hoog     { background:#fff3cd; color:#856404; }
+.kans-normaal  { background:#cce5ff; color:#004085; }
+.kans-laag     { background:#e8e8e8; color:#555; }
+
 /* ========================
    GANTT
 ========================= */
@@ -254,6 +271,8 @@ td.naam { font-weight: 500; max-width: 220px; }
   <button class="tab-btn"         data-tab="project-a"  onclick="switchTab(this)">Project A: Bewustwording</button>
   <button class="tab-btn"         data-tab="project-b"  onclick="switchTab(this)">Project B: Weet u wat u wilt</button>
   <button class="tab-btn"         data-tab="project-c"  onclick="switchTab(this)">Project C: Week Pall. Zorg</button>
+  <button class="tab-btn"         data-tab="risicos"    onclick="switchTab(this)">Risico's</button>
+  <button class="tab-btn"         data-tab="afh-besluit" onclick="switchTab(this)">Afhankelijkheden &amp; Besluiten</button>
 </div>
 
 <main>
@@ -406,6 +425,63 @@ td.naam { font-weight: 500; max-width: 220px; }
     </div>
   </div>
 
+  <!-- RISICO'S -->
+  <div class="tab-panel" id="tab-risicos">
+    <div class="action-bar">
+      <div class="toolbar">
+        <input type="text" id="search-risico" placeholder="Zoeken in risico's..." oninput="renderRisicos()">
+        <select id="status-risico" onchange="renderRisicos()">
+          <option value="">Alle statussen</option>
+          <option>Nieuw</option><option>Loopt</option><option>Afgerond</option>
+        </select>
+      </div>
+      <span class="count-label" id="count-risico"></span>
+    </div>
+    <div class="table-container">
+      <table><thead><tr>
+        <th>Nr</th>
+        <th>Beschrijving</th>
+        <th>Eigenaar</th>
+        <th>Bruto kans</th>
+        <th>Bruto impact</th>
+        <th>Netto kans</th>
+        <th>Netto impact</th>
+        <th>Mitigatie</th>
+        <th>Status</th>
+        <th>Deadline</th>
+      </tr></thead>
+      <tbody id="tbody-risico"></tbody></table>
+    </div>
+  </div>
+
+  <!-- AFHANKELIJKHEDEN & BESLUITEN -->
+  <div class="tab-panel" id="tab-afh-besluit">
+    <div class="section-title">Afhankelijkheden</div>
+    <div class="table-container" style="margin-bottom:28px">
+      <table><thead><tr>
+        <th>Nr</th>
+        <th>Beschrijving</th>
+        <th>Eigenaar</th>
+        <th>Type</th>
+        <th>Gewenste leverdatum</th>
+        <th>Status</th>
+        <th>Opmerking</th>
+      </tr></thead>
+      <tbody id="tbody-afh"></tbody></table>
+    </div>
+    <div class="section-title">Besluiten</div>
+    <div class="table-container">
+      <table><thead><tr>
+        <th>Nr</th>
+        <th>Beschrijving</th>
+        <th>Eigenaar</th>
+        <th>Genomen in</th>
+        <th>Datum</th>
+      </tr></thead>
+      <tbody id="tbody-besluit"></tbody></table>
+    </div>
+  </div>
+
 </main>
 
 <!-- MODAL -->
@@ -436,7 +512,9 @@ td.naam { font-weight: 500; max-width: 220px; }
         <div class="form-group"><label>Deadline in gevaar?</label>
           <select id="f-gevaar"><option>Nee</option><option>Komende Week</option><option>Ja</option></select>
         </div>
-        <div class="form-group"><label>Gerelateerd risico Nr</label><input type="text" id="f-risico"></div>
+        <div class="form-group"><label>Gerelateerd risico Nr</label><input type="text" id="f-risico" placeholder="bijv. 1;2"></div>
+        <div class="form-group"><label>Gerelateerd afhankelijkheid Nr</label><input type="text" id="f-afh-nr" placeholder="bijv. 1;3"></div>
+        <div class="form-group"><label>Gerelateerd besluit Nr</label><input type="text" id="f-besluit-nr" placeholder="bijv. 1"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -530,6 +608,62 @@ c: [
 };
 
 // =====================================================
+// RISICO'S, AFHANKELIJKHEDEN & BESLUITEN (read-only referentiedata)
+// =====================================================
+const RISICOS = [
+  { nr:1, beschrijving:'Niet iedereen ervaart het verhaal als compleet of voelt zich niet betrokken', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Normaal', mitigatie:'Extra aandacht geven aan de werksessies zodat er voldoende tijd is voor discussie en dat er een gedragen verhaal komt', netto_kans:'Laag', netto_impact:'Normaal', deadline:'2026-04-11', status:'Loopt', gekoppeld_acties:'1;2;3;4;5' },
+  { nr:2, beschrijving:'De term markeren is niet duidelijk genoeg: bij markeren wordt gedacht aan markeren van de palliatieve fase in plaats van markeren van het laatste levensjaar', eigenaar:'Denise', bruto_kans:'Zeer Hoog', bruto_impact:'Hoog', mitigatie:'Opnemen in de verhaallijnen en in de werkafspraken dat het gaat om markeren van het laatste levensjaar', netto_kans:'Normaal', netto_impact:'Normaal', deadline:'2026-06-01', status:'Loopt', gekoppeld_acties:'2;3;4' },
+  { nr:3, beschrijving:'Slechte betrokkenheid van communicatieadviseurs instellingen', eigenaar:'Anneloes', bruto_kans:'Zeer Hoog', bruto_impact:'Hoog', mitigatie:'Uitwerken van projectplan, en duidelijker communiceren wat we van hen verwachten en wat we gaan doen in de werksessie', netto_kans:'Laag', netto_impact:'Laag', deadline:'2026-04-02', status:'Loopt', gekoppeld_acties:'1.1' },
+  { nr:4, beschrijving:'Communicatie over de transformatie wordt verward met communicatie ten behoeve van bewustwording', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Normaal', mitigatie:'In de overleggen met de communicatieadviseurs steeds goed dit onderscheid agenderen', netto_kans:'Laag', netto_impact:'Laag', deadline:'2028-04-10', status:'Nieuw', gekoppeld_acties:'6' },
+  { nr:5, beschrijving:"De TA's hebben te weinig tijd om dit goed intern af te stemmen", eigenaar:'Anneloes', bruto_kans:'Normaal', bruto_impact:'Laag', mitigatie:'Na overleg van PMT alvast communiceren dat het eraan komt, dan weten ze het al en kunnen ze tijd inplannen', netto_kans:'Laag', netto_impact:'Laag', deadline:'2026-02-25', status:'Nieuw', gekoppeld_acties:'' },
+  { nr:6, beschrijving:'De verhalen moeten inhoudelijk goed aansluiten bij het beoogd zorgsysteem', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Zeer Hoog', mitigatie:'Blijven afstemmen met Denise bij de verschillende verhaallijnen', netto_kans:'Laag', netto_impact:'Laag', deadline:'', status:'Nieuw', gekoppeld_acties:'alle' },
+  { nr:7, beschrijving:'Algemeen publiek krijgt geen eenduidig beeld van wat palliatieve zorg is', eigenaar:'Anneloes', bruto_kans:'Normaal', bruto_impact:'Hoog', mitigatie:'Overzicht creëren en onderzoeken hoe we dit toch op elkaar kunnen afstemmen', netto_kans:'Normaal', netto_impact:'Normaal', deadline:'2026-10-08', status:'Nieuw', gekoppeld_acties:'' },
+  { nr:8, beschrijving:'Het aanmeldproces voor bijeenkomsten kost veel tijd aan back-office', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Normaal', mitigatie:'Website opnieuw inrichten zodat er minder handmatige handelingen zijn', netto_kans:'Laag', netto_impact:'Laag', deadline:'2027-01-29', status:'Nieuw', gekoppeld_acties:'B: 2.5' },
+];
+
+const AFHANKELIJKHEDEN = [
+  { nr:1, beschrijving:"Ingevulde format 'willen kunnen omgeving' door de TA", eigenaar:'Lonneke', type:'Inkomend product/resultaat', leverdatum:'2026-03-15', status:'Nieuw', opmerking:'Lonneke organiseert workshop met de TA om te bepalen waar er noodzaak is binnen de bepaalde sector/organisatie' },
+  { nr:2, beschrijving:'Betrokkenheid Margot', eigenaar:'Anneloes', type:'', leverdatum:'2026-04-02', status:'Loopt', opmerking:'Het zou handig zijn als Margot nog kan adviseren/ondersteunen in de voorbereiding van de werksessie voor het gezamenlijke verhaal. Overleggen met Michelle/PMT naar mogelijkheden' },
+  { nr:3, beschrijving:'Communicatieplan voor interne communicatie is afgerond', eigenaar:'TA', type:'', leverdatum:'2026-06-12', status:'Nieuw', opmerking:'De communicatieplannen voor de interne communicatie zijn gemaakt en de geschikte communicatiekanalen zijn bekend. Dit checken in de PvA-gesprekken. Ook gekoppeld aan risico 3' },
+  { nr:4, beschrijving:'Passende materialen zijn beschikbaar, toolkit', eigenaar:'Anneloes', type:'', leverdatum:'2026-05-02', status:'Loopt', opmerking:'Het afronden van de toolkit voor de TA. De actie wordt vermeld in project A' },
+  { nr:5, beschrijving:'Afspraken binnen TPZ: waar zijn we van', eigenaar:'Michelle', type:'', leverdatum:'2026-04-28', status:'Loopt', opmerking:'Waar zijn we allemaal van binnen de transformatie' },
+  { nr:6, beschrijving:'Gedragingen markering is af', eigenaar:'Lonneke', type:'', leverdatum:'', status:'Loopt', opmerking:'Overleggen met Michelle/PMT naar mogelijkheden' },
+];
+
+const BESLUITEN = [
+  { nr:1, beschrijving:'Werkwijze verhaallijn - algemeen & RHO', eigenaar:'Anneloes', forum:'Projectleider overleg', datum:'2026-03-24', verwijzing:'' },
+];
+
+// Helpers: lookup risico/afhankelijkheid/besluit nummers uit een actie
+function parseNrs(str) {
+  if (!str) return [];
+  return str.split(/[;,\s]+/).map(s=>s.trim()).filter(Boolean).map(s=>parseInt(s)).filter(n=>!isNaN(n));
+}
+
+function getLinkedRisicos(item) {
+  const nrs = parseNrs(item.risico);
+  return RISICOS.filter(r => nrs.includes(r.nr));
+}
+
+function getLinkedAfh(item) {
+  // acties hebben 'Gerelateerd Nr afhankelijkheid' - in SEED niet opgeslagen apart
+  // we match op basis van wat in beschrijving/risico staat - afh nr opgeslagen in item.afh_nr (nieuw veld)
+  const nrs = parseNrs(item.afh_nr);
+  return AFHANKELIJKHEDEN.filter(a => nrs.includes(a.nr));
+}
+
+function getLinkedBesluiten(item) {
+  const nrs = parseNrs(item.besluit_nr);
+  return BESLUITEN.filter(b => nrs.includes(b.nr));
+}
+
+function kansBadge(kans) {
+  if (!kans) return '';
+  const map = { 'Zeer Hoog':'kans-zeerhoog','Hoog':'kans-hoog','Normaal':'kans-normaal','Laag':'kans-laag','Zeer Laag':'kans-laag' };
+  return `<span class="kans-badge ${map[kans]||''}">${kans}</span>`;
+}
+
+// =====================================================
 // STATE
 // =====================================================
 const STORAGE_KEY = 'tpz_v2';
@@ -617,6 +751,8 @@ function renderAll() {
   renderTable('a'); renderTable('b'); renderTable('c');
   renderTableAll();
   renderGantt();
+  renderRisicos();
+  renderAfhBesluit();
 }
 
 function renderProjectCards() {
@@ -682,6 +818,7 @@ function renderTable(key) {
           <div class="detail-item"><label>Deadline</label><p class="${dlc}">${formatDate(item.deadline)||'-'}</p></div>
           ${item.risico?`<div class="detail-item"><label>Gerelateerd risico</label><p>${esc(item.risico)}</p></div>`:''}
         </div>
+        ${renderLinkedItems(item)}
       </td>
     </tr>`;
   }).join('');
@@ -708,6 +845,125 @@ function renderTableAll() {
 
 function toggleDetail(key, id) {
   document.getElementById(`detail-${key}-${id}`)?.classList.toggle('open');
+}
+
+// =====================================================
+// LINKED ITEMS RENDER
+// =====================================================
+function renderLinkedItems(item) {
+  const risicos = getLinkedRisicos(item);
+  const afh     = getLinkedAfh(item);
+  const bes     = getLinkedBesluiten(item);
+  if (!risicos.length && !afh.length && !bes.length) return '';
+
+  let html = '<div class="linked-block">';
+
+  if (risicos.length) {
+    html += `<div class="linked-block-title">Gekoppelde risico's</div><div class="linked-cards">`;
+    risicos.forEach(r => {
+      html += `<div class="linked-card type-risico">
+        <span class="lc-nr">R${r.nr}</span>
+        <span class="lc-desc">${esc(r.beschrijving)}</span>
+        <span class="lc-meta">${kansBadge(r.bruto_kans)} bruto &rarr; ${kansBadge(r.netto_kans)} netto &nbsp;&bull;&nbsp; Mitigatie: ${esc(r.mitigatie)}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (afh.length) {
+    html += `<div class="linked-block-title" style="margin-top:8px">Gekoppelde afhankelijkheden</div><div class="linked-cards">`;
+    afh.forEach(a => {
+      html += `<div class="linked-card type-afh">
+        <span class="lc-nr">A${a.nr}</span>
+        <span class="lc-desc">${esc(a.beschrijving)}</span>
+        <span class="lc-meta">Eigenaar: ${esc(a.eigenaar)} &bull; Status: ${esc(a.status)}${a.opmerking?' &bull; '+esc(a.opmerking):''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (bes.length) {
+    html += `<div class="linked-block-title" style="margin-top:8px">Gekoppelde besluiten</div><div class="linked-cards">`;
+    bes.forEach(b => {
+      html += `<div class="linked-card type-besluit">
+        <span class="lc-nr">B${b.nr}</span>
+        <span class="lc-desc">${esc(b.beschrijving)}</span>
+        <span class="lc-meta">Eigenaar: ${esc(b.eigenaar)} &bull; ${esc(b.forum)}${b.datum?' &bull; '+b.datum:''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// =====================================================
+// RISICO'S TAB
+// =====================================================
+function renderRisicos() {
+  const search = (document.getElementById('search-risico')?.value||'').toLowerCase();
+  const status = document.getElementById('status-risico')?.value||'';
+  const items  = RISICOS.filter(r => {
+    const ms = !search || [r.beschrijving, r.eigenaar, r.mitigatie].some(f=>(f||'').toLowerCase().includes(search));
+    const mst= !status || r.status===status;
+    return ms && mst;
+  });
+  const countEl = document.getElementById('count-risico');
+  if (countEl) countEl.innerHTML = `<strong>${items.length}</strong> van ${RISICOS.length} risico's`;
+  const tbody = document.getElementById('tbody-risico');
+  if (!items.length) { tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--grijs-mid)">Geen risico's gevonden.</td></tr>`; return; }
+  tbody.innerHTML = items.map(r => {
+    const badgeMap = { 'Loopt':'badge-loopt','Nieuw':'badge-nieuw','Afgerond':'badge-afgerond' };
+    return `<tr>
+      <td class="num" style="font-weight:700">R${r.nr}</td>
+      <td style="max-width:280px;font-size:0.77rem;font-weight:500">${esc(r.beschrijving)}</td>
+      <td><span class="tag-user">${esc(r.eigenaar)}</span></td>
+      <td>${kansBadge(r.bruto_kans)}</td>
+      <td>${kansBadge(r.bruto_impact)}</td>
+      <td>${kansBadge(r.netto_kans)}</td>
+      <td>${kansBadge(r.netto_impact)}</td>
+      <td style="font-size:0.74rem;color:#555;max-width:200px">${esc(r.mitigatie)}</td>
+      <td><span class="badge ${badgeMap[r.status]||'badge-nieuw'}">${esc(r.status)}</span></td>
+      <td class="num" style="font-size:0.73rem">${r.deadline||'-'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// =====================================================
+// AFHANKELIJKHEDEN & BESLUITEN TAB
+// =====================================================
+function renderAfhBesluit() {
+  // Afhankelijkheden
+  const tbodyAfh = document.getElementById('tbody-afh');
+  if (tbodyAfh) {
+    const badgeMap = { 'Loopt':'badge-loopt','Nieuw':'badge-nieuw','Afgerond':'badge-afgerond' };
+    tbodyAfh.innerHTML = AFHANKELIJKHEDEN.map(a => `<tr>
+      <td class="num" style="font-weight:700">A${a.nr}</td>
+      <td style="font-weight:500;font-size:0.77rem;max-width:240px">${esc(a.beschrijving)}</td>
+      <td><span class="tag-user">${esc(a.eigenaar)}</span></td>
+      <td style="font-size:0.73rem;color:#888">${esc(a.type)||'-'}</td>
+      <td class="num">${a.leverdatum||'-'}</td>
+      <td><span class="badge ${badgeMap[a.status]||'badge-nieuw'}">${esc(a.status)}</span></td>
+      <td style="font-size:0.74rem;color:#555;max-width:220px">${esc(a.opmerking)||'-'}</td>
+    </tr>`).join('');
+  }
+
+  // Besluiten
+  const tbodyBes = document.getElementById('tbody-besluit');
+  if (tbodyBes) {
+    if (!BESLUITEN.filter(b=>b.beschrijving).length) {
+      tbodyBes.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--grijs-mid)">Nog geen besluiten vastgelegd.</td></tr>`;
+    } else {
+      tbodyBes.innerHTML = BESLUITEN.filter(b=>b.beschrijving).map(b => `<tr>
+        <td class="num" style="font-weight:700">B${b.nr}</td>
+        <td style="font-weight:500;font-size:0.77rem">${esc(b.beschrijving)}</td>
+        <td><span class="tag-user">${esc(b.eigenaar)}</span></td>
+        <td style="font-size:0.74rem;color:#888">${esc(b.forum)}</td>
+        <td class="num">${b.datum||'-'}</td>
+      </tr>`).join('');
+    }
+  }
 }
 
 function sortTable(key, col) {
@@ -905,6 +1161,8 @@ function fillForm(item) {
   ['nr','naam','eigenaar','start','deadline','beschrijving','opmerking','risico'].forEach(f => {
     document.getElementById('f-'+f).value = item[f]||'';
   });
+  document.getElementById('f-afh-nr').value    = item.afh_nr||'';
+  document.getElementById('f-besluit-nr').value = item.besluit_nr||'';
   document.getElementById('f-prio').value   = item.prio||'';
   document.getElementById('f-status').value = item.status||'Nieuw';
   document.getElementById('f-type').value   = item.type||'';
@@ -913,6 +1171,8 @@ function fillForm(item) {
 
 function clearForm() {
   ['nr','naam','eigenaar','start','deadline','beschrijving','opmerking','risico'].forEach(f => document.getElementById('f-'+f).value='');
+  document.getElementById('f-afh-nr').value='';
+  document.getElementById('f-besluit-nr').value='';
   document.getElementById('f-prio').value=''; document.getElementById('f-status').value='Nieuw';
   document.getElementById('f-gevaar').value='Nee';
 }
@@ -938,6 +1198,8 @@ function saveItem() {
     opmerking: document.getElementById('f-opmerking').value.trim(),
     gevaar: document.getElementById('f-gevaar').value,
     risico: document.getElementById('f-risico').value.trim(),
+    afh_nr: document.getElementById('f-afh-nr').value.trim(),
+    besluit_nr: document.getElementById('f-besluit-nr').value.trim(),
     vragen: '',
   };
   if (!item.naam) { alert('Vul minimaal een naam in.'); return; }
