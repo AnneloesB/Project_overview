@@ -795,7 +795,9 @@ function renderTable(key) {
   tbody.innerHTML = items.map(item => {
     const isMilestone = (item.type||'').toLowerCase().includes('milestone');
     const dlc = deadlineClass(item);
-    return `<tr class="${isMilestone?'milestone-row':''} row-expandable" onclick="toggleDetail('${key}','${item.id}')">
+    return `<tr class="${isMilestone?'milestone-row':''} row-expandable"
+    data-id="${item.id}"
+    onclick="toggleDetail('${key}','${item.id}')">
       <td class="num">${esc(item.nr)}</td>
       <td>${prioBadge(item.prio)}</td>
       <td class="naam">${esc(item.naam)}</td>
@@ -1124,11 +1126,15 @@ function renderGantt() {
     }
 
     // Bar
-    html += `<div class="gantt-bar-wrap" style="left:${leftPct.toFixed(2)}%;width:${widthPct.toFixed(2)}%;top:50%;transform:translateY(-50%)">
-      <div class="gantt-bar ${barClass}" title="${esc(item.naam)} | ${formatDate(item.start)} - ${formatDate(item.deadline)}">
-        ${widthPct > 3 ? esc(item.naam) : ''}
-      </div>
-    </div>`;
+// Bar
+html += `<div class="gantt-bar-wrap" style="left:${leftPct.toFixed(2)}%;width:${widthPct.toFixed(2)}%;top:50%;transform:translateY(-50%)">
+  <div class="gantt-bar ${barClass}"
+       onclick="goToAction('${item._k}','${item.id}')"
+       style="cursor:pointer"
+       title="${esc(item.naam)} | ${formatDate(item.start)} - ${formatDate(item.deadline)}">
+    ${widthPct > 3 ? esc(item.naam) : ''}
+  </div>
+</div>`;
 
     html += `</div></div>`;
   });
@@ -1333,7 +1339,48 @@ function importJSON(input) {
   };
   reader.readAsText(file);
 }
+function addRisico() {
+  const nr = prompt("Nummer van risico:");
+  const beschrijving = prompt("Beschrijving:");
 
+  if (!nr || !beschrijving) return;
+
+  RISICOS.push({
+    nr: parseInt(nr),
+    beschrijving,
+    eigenaar: '',
+    bruto_kans: 'Normaal',
+    bruto_impact: 'Normaal',
+    netto_kans: 'Normaal',
+    netto_impact: 'Normaal',
+    mitigatie: '',
+    deadline: '',
+    status: 'Nieuw',
+    gekoppeld_acties: ''
+  });
+
+  renderRisicos();
+}
+function goToAction(projectKey, id) {
+  const tabName =
+    projectKey === 'a' ? 'project-a' :
+    projectKey === 'b' ? 'project-b' :
+    'project-c';
+
+  const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  if (tabBtn) switchTab(tabBtn);
+
+  setTimeout(() => {
+    const row = document.querySelector(`#tbody-${projectKey} tr[data-id="${id}"]`);
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      row.meaningless = true;
+      row.style.background = '#fff3cd';
+      setTimeout(() => row.style.background = '', 2000);
+      row.click();
+    }
+  }, 120);
+}
 // =====================================================
 // INIT
 // =====================================================
