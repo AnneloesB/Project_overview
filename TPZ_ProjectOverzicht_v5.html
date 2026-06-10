@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPZ Midden-Nederland - Projectoverzicht</title>
+<meta name="author" content="Anneloes Bork">
+<!-- Opgesteld door Anneloes Bork | v5 -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+
+:root {
+  --groen-donker: #46571b;
+  --groen-licht: #93ab67;
+  --geel: #ebdc86;
+  --wit: #f9f8f4;
+  --grijs-licht: #eeecea;
+  --grijs-mid: #c8c4bc;
+  --grijs-donker: #4a4740;
+  --tekst: #2a2825;
+  --rood: #c0392b;
+  --oranje: #e67e22;
+  --blauw: #2980b9;
+  --header-h: 58px;
+  --tabs-h: 42px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--wit); color: var(--tekst); min-height: 100vh; }
+
+/* HEADER */
+header {
+  background: var(--groen-donker); color: white;
+  padding: 0 28px; height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(70,87,27,0.25);
+}
+header h1 { font-size: 1rem; font-weight: 600; }
+header span { font-size: 0.72rem; opacity: 0.65; font-weight: 300; display: block; margin-top: 1px; }
+.header-badge { background: var(--geel); color: var(--groen-donker); font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* TABS */
+.tabs-wrapper {
+  background: var(--groen-donker); padding: 0 28px;
+  display: flex; gap: 0; border-top: 1px solid rgba(255,255,255,0.1);
+  position: sticky; top: var(--header-h); z-index: 99;
+  overflow-x: auto;
+}
+.tab-btn {
+  background: none; border: none; color: rgba(255,255,255,0.6);
+  padding: 10px 18px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+  font-weight: 500; cursor: pointer; transition: all 0.15s;
+  border-bottom: 3px solid transparent; white-space: nowrap;
+}
+.tab-btn:hover { color: rgba(255,255,255,0.9); }
+.tab-btn.active { color: var(--geel); border-bottom-color: var(--geel); }
+
+/* MAIN */
+main { max-width: 1440px; margin: 0 auto; padding: 24px 28px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* PROJECT CARDS */
+.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.project-card { background: white; border: 1px solid var(--grijs-licht); border-radius: 10px; padding: 18px; border-left: 4px solid var(--groen-licht); }
+.project-card h3 { font-size: 0.88rem; font-weight: 600; color: var(--groen-donker); margin-bottom: 12px; line-height: 1.4; }
+.stat-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.stat-pill { background: var(--grijs-licht); border-radius: 5px; padding: 4px 9px; font-size: 0.72rem; font-weight: 500; color: var(--grijs-donker); display: flex; align-items: center; gap: 4px; }
+.stat-pill .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* TOOLBAR */
+.toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.toolbar input, .toolbar select {
+  background: white; border: 1px solid var(--grijs-mid); border-radius: 7px;
+  padding: 7px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+  color: var(--tekst); outline: none; transition: border-color 0.15s;
+}
+.toolbar input:focus, .toolbar select:focus { border-color: var(--groen-licht); }
+.toolbar input[type=text] { min-width: 200px; }
+.toolbar input[type=date] { font-size: 0.78rem; }
+
+/* BUTTONS */
+.btn { border: none; border-radius: 7px; padding: 7px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 5px; }
+.btn-primary { background: var(--groen-donker); color: white; }
+.btn-primary:hover { background: #374514; }
+.btn-secondary { background: var(--grijs-licht); color: var(--grijs-donker); }
+.btn-secondary:hover { background: var(--grijs-mid); }
+.btn-danger { background: #fde8e6; color: var(--rood); }
+.btn-danger:hover { background: #fbd0cc; }
+.btn-sm { padding: 4px 9px; font-size: 0.72rem; }
+.btn-icon { padding: 5px 7px; }
+
+/* ACTION BAR */
+.action-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+.count-label { font-size: 0.76rem; color: var(--grijs-donker); }
+.count-label strong { color: var(--groen-donker); }
+
+/* TABLE */
+.table-container { background: white; border: 1px solid var(--grijs-licht); border-radius: 10px; overflow: hidden; margin-bottom: 24px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+thead th { background: var(--groen-donker); color: white; text-align: left; padding: 10px 13px; font-weight: 600; font-size: 0.72rem; letter-spacing: 0.03em; white-space: nowrap; cursor: pointer; user-select: none; }
+thead th:hover { background: #374514; }
+thead th.sort-asc::after { content: " \2191"; }
+thead th.sort-desc::after { content: " \2193"; }
+tbody tr { border-bottom: 1px solid var(--grijs-licht); transition: background 0.1s; }
+tbody tr:hover { background: #f6f5f1; }
+tbody tr.milestone-row { background: #fefce8; }
+tbody tr.milestone-row:hover { background: #fdf9d0; }
+td { padding: 8px 13px; vertical-align: middle; line-height: 1.4; }
+td.num { font-family: 'DM Mono', monospace; font-size: 0.72rem; }
+td.naam { font-weight: 500; max-width: 220px; }
+
+/* BADGES */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.67rem; font-weight: 600; white-space: nowrap; }
+.badge-afgerond { background: #d4edda; color: #1a6630; }
+.badge-loopt    { background: #cce5ff; color: #004085; }
+.badge-nieuw    { background: #e8e8e8; color: #555; }
+.badge-gevaar   { background: #ffe8d6; color: #8b3a00; }
+.badge-milestone{ background: var(--geel); color: var(--groen-donker); }
+.badge-rood     { background: #fde8e6; color: var(--rood); }
+
+.prio { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; white-space: nowrap; }
+.prio-zeerhoog { background: #fde8e6; color: #c0392b; }
+.prio-hoog     { background: #fff3cd; color: #856404; }
+.prio-normaal  { background: #e8f4fd; color: #0c5460; }
+.prio-laag     { background: #e8e8e8; color: #666; }
+
+.btn-export { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); font-size: 0.72rem; padding: 5px 11px; border-radius: 6px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; transition: background 0.15s; }
+.btn-export:hover { background: rgba(255,255,255,0.25); }
+.btn-import { background: rgba(235,220,134,0.2); color: var(--geel); border: 1px solid rgba(235,220,134,0.4); font-size: 0.72rem; padding: 5px 11px; border-radius: 6px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; transition: background 0.15s; display: inline-block; }
+.btn-import:hover { background: rgba(235,220,134,0.3); }
+
+.deadline-komend   { color: var(--oranje) !important; font-weight: 600; }
+.tag-user { background: #e8f4fd; color: #1a5276; border-radius: 4px; padding: 1px 6px; font-size: 0.68rem; font-weight: 500; }
+
+/* ROW DETAIL */
+.row-expandable { cursor: pointer; }
+.row-detail { display: none; background: #f8f7f3; }
+.row-detail.open { display: table-row; }
+.row-detail td { padding: 10px 16px; border-bottom: 2px solid var(--grijs-mid); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; font-size: 0.76rem; }
+.detail-item label { display: block; font-weight: 700; color: var(--groen-donker); margin-bottom: 2px; font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.detail-item p { color: #555; line-height: 1.5; }
+
+/* SECTION TITLE */
+.section-title { font-size: 0.67rem; font-weight: 700; color: var(--groen-donker); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--grijs-licht); }
+
+/* LINKED ITEMS IN DETAIL */
+.linked-block { margin-top: 10px; border-top: 1px dashed var(--grijs-mid); padding-top: 10px; }
+.linked-block-title { font-size: 0.67rem; font-weight: 700; color: var(--groen-donker); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.linked-cards { display: flex; flex-direction: column; gap: 6px; }
+.linked-card { background: white; border: 1px solid var(--grijs-licht); border-radius: 7px; padding: 8px 12px; font-size: 0.75rem; display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
+.linked-card.type-risico  { border-left: 3px solid var(--rood); }
+.linked-card.type-afh     { border-left: 3px solid var(--blauw); }
+.linked-card.type-besluit { border-left: 3px solid var(--geel); }
+.linked-card .lc-nr  { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--grijs-donker); font-weight: 700; white-space: nowrap; }
+.linked-card .lc-desc { color: var(--tekst); line-height: 1.45; }
+.linked-card .lc-meta { grid-column: 2; font-size: 0.68rem; color: #888; }
+.kans-badge { display:inline-block; padding:1px 6px; border-radius:10px; font-size:0.64rem; font-weight:700; }
+.kans-zeerhoog { background:#fde8e6; color:#c0392b; }
+.kans-hoog     { background:#fff3cd; color:#856404; }
+.kans-normaal  { background:#cce5ff; color:#004085; }
+.kans-laag     { background:#e8e8e8; color:#555; }
+
+/* ========================
+   GANTT
+========================= */
+.gantt-wrapper { background: white; border: 1px solid var(--grijs-licht); border-radius: 10px; overflow: hidden; }
+.gantt-toolbar { padding: 14px 16px; border-bottom: 1px solid var(--grijs-licht); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.gantt-toolbar-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.gantt-legend { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 0.72rem; color: var(--grijs-donker); }
+.gantt-legend-item { display: flex; align-items: center; gap: 4px; }
+.gantt-legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+.gantt-scroll { overflow-x: auto; }
+.gantt-container { min-width: 900px; }
+
+.gantt-header-row { display: flex; border-bottom: 2px solid var(--grijen-mid); }
+.gantt-label-col { width: 400px; min-width: 400px; flex-shrink: 0; background: var(--groen-donker); color: white; padding: 8px 12px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.03em; display: flex; align-items: center; }
+.gantt-months { flex: 1; display: flex; background: var(--groen-donker); }
+.gantt-month { flex: 1; text-align: center; padding: 8px 4px; font-size: 0.68rem; font-weight: 600; color: rgba(255,255,255,0.85); border-left: 1px solid rgba(255,255,255,0.15); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gantt-month.today-month { color: var(--geel); }
+
+.gantt-row { display: flex; border-bottom: 1px solid var(--grijs-licht); min-height: 34px; transition: background 0.1s; cursor: pointer; }
+.gantt-row:hover { background: #f6f5f1; }
+.gantt-row.milestone-row { background: #fefce8; }
+.gantt-row.milestone-row:hover { background: #fdf9d0; }
+.gantt-row-label {
+  width: 400px; min-width: 400px; flex-shrink: 0;
+  padding: 6px 12px; font-size: 0.76rem;
+  border-right: 2px solid var(--grijs-mid);
+  display: flex; align-items: center; gap: 6px;
+  line-height: 1.35;
+}
+.gantt-row-label .nr { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--grijs-donker); flex-shrink: 0; }
+.gantt-row-label .lbl { font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gantt-row-label .owner { font-size: 0.65rem; color: #888; white-space: nowrap; }
+
+.gantt-timeline { flex: 1; position: relative; display: flex; align-items: center; }
+.gantt-month-bg { position: absolute; top: 0; bottom: 0; border-left: 1px solid #e8e6e0; pointer-events: none; }
+.gantt-month-bg.today-col { background: rgba(235,220,134,0.12); border-left: 2px solid rgba(235,220,134,0.5); }
+.gantt-bar-wrap { position: absolute; height: 20px; border-radius: 4px; overflow: visible; }
+.gantt-bar {
+  height: 100%; border-radius: 4px;
+  display: flex; align-items: center; padding: 0 6px;
+  font-size: 0.62rem; font-weight: 600; color: white;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  cursor: default;
+  transition: filter 0.15s;
+}
+.gantt-bar:hover { filter: brightness(1.1); }
+.gantt-bar.bar-afgerond { background: #93ab67; }
+.gantt-bar.bar-loopt    { background: #2980b9; }
+.gantt-bar.bar-nieuw    { background: #aaa; }
+.gantt-bar.bar-verlopen { background: var(--rood); }
+.gantt-bar.bar-komend   { background: var(--oranje); }
+.gantt-bar.bar-milestone { background: var(--groen-donker); border: 2px solid var(--geel); }
+.gantt-bar.bar-weekpz   { background: #6b9e8f; }
+
+@keyframes highlight-pulse {
+  0%   { background: rgba(235,220,134,0.55); }
+  60%  { background: rgba(235,220,134,0.55); }
+  100% { background: transparent; }
+}
+tr.nav-highlight { animation: highlight-pulse 2s ease forwards; }
+
+/* BULK SELECTIE */
+.cb-cell { width: 32px; padding: 0 4px 0 10px !important; }
+.cb-cell input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; accent-color: var(--groen-donker); }
+tr.selected-row > td { background: rgba(147,171,103,0.13); }
+.bulk-bar {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--groen-donker); color: white;
+  padding: 10px 18px; border-radius: 12px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 4px 24px rgba(70,87,27,0.35);
+  z-index: 200; font-size: 0.82rem; font-weight: 500;
+  transition: opacity 0.18s, transform 0.18s;
+  white-space: nowrap;
+}
+.bulk-bar.hidden { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(12px); }
+.bulk-bar select { border: none; background: rgba(255,255,255,0.15); color: white; border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; }
+.bulk-bar select option { color: var(--tekst); background: white; }
+.bulk-bar .bulk-count { background: var(--geel); color: var(--groen-donker); font-weight: 700; padding: 2px 9px; border-radius: 20px; font-size: 0.75rem; }
+.bulk-bar .btn-bulk-ok { background: var(--geel); color: var(--groen-donker); border: none; border-radius: 7px; padding: 5px 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+.bulk-bar .btn-bulk-ok:hover { background: #f5e96a; }
+.bulk-bar .btn-bulk-cancel { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 7px; padding: 5px 10px; font-size: 0.78rem; cursor: pointer; }
+.bulk-bar .btn-bulk-cancel:hover { background: rgba(255,255,255,0.1); }
+
+.today-line { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--rood); opacity: 0.7; pointer-events: none; z-index: 5; }
+.today-label { position: absolute; top: 0; font-size: 0.6rem; background: var(--rood); color: white; padding: 1px 4px; border-radius: 0 0 3px 3px; transform: translateX(-50%); white-space: nowrap; font-weight: 700; }
+
+.gantt-empty { padding: 36px; text-align: center; color: var(--grijs-mid); font-size: 0.85rem; }
+
+/* MODAL */
+.modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
+.modal-backdrop.open { display: flex; }
+.modal { background: white; border-radius: 12px; width: 660px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+.modal-header { background: var(--groen-donker); color: white; padding: 18px 22px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { font-size: 0.95rem; font-weight: 600; }
+.modal-close { background: none; border: none; color: white; font-size: 1.3rem; cursor: pointer; opacity: 0.7; line-height: 1; padding: 0 4px; }
+.modal-close:hover { opacity: 1; }
+.modal-body { padding: 22px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-group label { font-size: 0.7rem; font-weight: 700; color: var(--groen-donker); text-transform: uppercase; letter-spacing: 0.04em; }
+.form-group input, .form-group select, .form-group textarea { border: 1px solid var(--grijs-mid); border-radius: 7px; padding: 8px 11px; font-family: 'DM Sans', sans-serif; font-size: 0.81rem; color: var(--tekst); outline: none; transition: border-color 0.15s; background: white; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--groen-licht); }
+.form-group textarea { resize: vertical; min-height: 65px; }
+.modal-footer { padding: 14px 22px; border-top: 1px solid var(--grijs-licht); display: flex; justify-content: flex-end; gap: 10px; }
+
+@media (max-width: 768px) {
+  main { padding: 14px; }
+  .tabs-wrapper { padding: 0 14px; }
+  header { padding: 0 14px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .gantt-row-label { width: 180px; min-width: 180px; }
+  .gantt-label-col { width: 180px; min-width: 180px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>TPZ Midden-Nederland - Projectoverzicht</h1>
+    <span>Bewustwordingsstrategie &amp; Actielogs</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="btn btn-export" onclick="exportToExcel()" title="Exporteer alle acties naar Excel (zelfde indeling als Acties_A/B/C tabbladen)">&#8595; Export Excel</button>
+    <label class="btn btn-import" title="Importeer eerder geexporteerd JSON-bestand">&#8593; Import JSON<input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
+    <button class="btn btn-export" onclick="exportJSON()" title="Exporteer alle data als JSON backup">&#8595; Backup JSON</button>
+    <div class="header-badge">Actietracker</div>
+  </div>
+</header>
+
+<div class="tabs-wrapper">
+  <button class="tab-btn active"  data-tab="overzicht"  onclick="switchTab(this)">Overzicht</button>
+  <button class="tab-btn"         data-tab="gantt"      onclick="switchTab(this)">Gantt</button>
+  <button class="tab-btn"         data-tab="project-a"  onclick="switchTab(this)">Project A: Bewustwording zorgprofessionals</button>
+  <button class="tab-btn"         data-tab="project-b"  onclick="switchTab(this)">Project B: Bewustwording inwoners</button>
+  <button class="tab-btn"         data-tab="project-c"  onclick="switchTab(this)">Project C: Monitoring, evaluatie en borging</button>
+  <button class="tab-btn"         data-tab="risicos"    onclick="switchTab(this)">Risico's</button>
+  <button class="tab-btn"         data-tab="afh-besluit" onclick="switchTab(this)">Afhankelijkheden &amp; Besluiten</button>
+</div>
+
+<main>
+
+  <!-- OVERZICHT -->
+  <div class="tab-panel active" id="tab-overzicht">
+    <div class="section-title">Projecten</div>
+    <div class="project-grid" id="project-cards"></div>
+    <div class="section-title">Alle openstaande acties</div>
+    <div class="table-container">
+      <table>
+        <thead><tr>
+          <th>Project</th>
+          <th>Nr</th>
+          <th>Naam</th>
+          <th>Eigenaar</th>
+          <th>Status</th>
+          <th>Deadline</th>
+          <th>Prio</th>
+        </tr></thead>
+        <tbody id="tbody-all"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GANTT -->
+  <div class="tab-panel" id="tab-gantt">
+    <div class="gantt-wrapper">
+      <div class="gantt-toolbar">
+        <div class="gantt-toolbar-left">
+          <select id="gantt-project" onchange="renderGantt()">
+            <option value="all">Alle projecten</option>
+            <option value="a">Project A: Bewustwording zorgprofessionals</option>
+            <option value="b">Project B: Bewustwording inwoners</option>
+            <option value="c">Project C: Monitoring, evaluatie en borging</option>
+          </select>
+          <select id="gantt-status" onchange="renderGantt()">
+            <option value="all">Alle statussen</option>
+            <option value="open">Openstaand (nieuw + loopt)</option>
+            <option value="Nieuw">Nieuw</option>
+            <option value="Loopt">Loopt</option>
+            <option value="Afgerond">Afgerond</option>
+          </select>
+          <label style="font-size:0.76rem;color:var(--grijs-donker);display:flex;align-items:center;gap:5px;">
+            <input type="checkbox" id="gantt-milestones" onchange="renderGantt()" checked> Milestones tonen
+          </label>
+          <div style="font-size:0.76rem;color:var(--grijs-donker);display:flex;align-items:center;gap:6px;">
+            <span>Periode:</span>
+            <input type="date" id="gantt-from" onchange="renderGantt()" style="font-size:0.75rem;padding:5px 8px;">
+            <span>tot</span>
+            <input type="date" id="gantt-to" onchange="renderGantt()" style="font-size:0.75rem;padding:5px 8px;">
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="setGanttPeriod('month')">Deze maand</button>
+          <button class="btn btn-secondary btn-sm" onclick="setGanttPeriod('quarter')">Komend kwartaal</button>
+          <button class="btn btn-secondary btn-sm" onclick="setGanttPeriod('all')">Alles</button>
+          <button class="btn btn-secondary btn-sm" id="gantt-sort-btn" onclick="toggleGanttSort()">Sorteren op datum</button>
+        </div>
+        <div class="gantt-legend">
+          <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#93ab67"></div> Afgerond</div>
+          <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#2980b9"></div> Loopt</div>
+          <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#aaa"></div> Nieuw</div>
+          <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:var(--oranje)"></div> Deadline nadert</div>
+          <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:var(--rood)"></div> Deadline verstreken</div>
+          <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#6b9e8f"></div> Project C: Week Pall. Zorg</div>
+        </div>
+      </div>
+      <div class="gantt-scroll">
+        <div id="gantt-container" class="gantt-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT A -->
+  <div class="tab-panel" id="tab-project-a">
+    <div class="action-bar">
+      <div class="toolbar">
+        <input type="text" id="search-a" placeholder="Zoeken..." oninput="renderTable('a')">
+        <select id="status-a" onchange="renderTable('a')"><option value="">Alle statussen</option><option>Nieuw</option><option>Loopt</option><option>Afgerond</option></select>
+        <select id="prio-a"   onchange="renderTable('a')"><option value="">Alle prioriteiten</option><option>Zeer Hoog</option><option>Hoog</option><option>Normaal</option><option>Laag</option></select>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="count-label" id="count-a"></span>
+        <button class="btn btn-primary" onclick="openModal('a')">+ Nieuwe actie</button>
+      </div>
+    </div>
+    <div class="table-container">
+      <table><thead><tr>
+        <th class="cb-cell"><input type="checkbox" class="master-cb" onchange="toggleSelectAll('a',this)" onclick="event.stopPropagation()"></th>
+        <th onclick="sortTable('a','nr')">Nr</th>
+        <th onclick="sortTable('a','prio')">Prio</th>
+        <th onclick="sortTable('a','naam')">Naam</th>
+        <th onclick="sortTable('a','eigenaar')">Eigenaar</th>
+        <th onclick="sortTable('a','status')">Status</th>
+        <th onclick="sortTable('a','deadline')">Deadline</th>
+        <th onclick="sortTable('a','type')">Type</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tbody-a"></tbody></table>
+    </div>
+  </div>
+
+  <!-- PROJECT B -->
+  <div class="tab-panel" id="tab-project-b">
+    <div class="action-bar">
+      <div class="toolbar">
+        <input type="text" id="search-b" placeholder="Zoeken..." oninput="renderTable('b')">
+        <select id="status-b" onchange="renderTable('b')"><option value="">Alle statussen</option><option>Nieuw</option><option>Loopt</option><option>Afgerond</option></select>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="count-label" id="count-b"></span>
+        <button class="btn btn-primary" onclick="openModal('b')">+ Nieuwe actie</button>
+      </div>
+    </div>
+    <div class="table-container">
+      <table><thead><tr>
+        <th class="cb-cell"><input type="checkbox" class="master-cb" onchange="toggleSelectAll('b',this)" onclick="event.stopPropagation()"></th>
+        <th onclick="sortTable('b','nr')">Nr</th>
+        <th onclick="sortTable('b','prio')">Prio</th>
+        <th onclick="sortTable('b','naam')">Naam</th>
+        <th onclick="sortTable('b','eigenaar')">Eigenaar</th>
+        <th onclick="sortTable('b','status')">Status</th>
+        <th onclick="sortTable('b','deadline')">Deadline</th>
+        <th onclick="sortTable('b','type')">Type</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tbody-b"></tbody></table>
+    </div>
+  </div>
+
+  <!-- PROJECT C -->
+  <div class="tab-panel" id="tab-project-c">
+    <div style="margin-bottom:14px;">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--groen-donker);margin-bottom:4px;">Project C: Bewustwording inwoners</h2>
+      <p style="font-size:0.78rem;color:var(--grijs-donker);">Bevat acties rondom de Week van de Palliatieve Zorg <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#6b9e8f;vertical-align:middle;margin:0 3px;"></span> en de bredere bewustwording onder inwoners <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--groen-licht);vertical-align:middle;margin:0 3px;"></span></p>
+    </div>
+    <div class="action-bar">
+      <div class="toolbar">
+        <input type="text" id="search-c" placeholder="Zoeken..." oninput="renderTable('c')">
+        <select id="status-c" onchange="renderTable('c')"><option value="">Alle statussen</option><option>Nieuw</option><option>Loopt</option><option>Afgerond</option></select>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="count-label" id="count-c"></span>
+        <button class="btn btn-primary" onclick="openModal('c')">+ Nieuwe actie</button>
+      </div>
+    </div>
+    <div class="table-container">
+      <table><thead><tr>
+        <th class="cb-cell"><input type="checkbox" class="master-cb" onchange="toggleSelectAll('c',this)" onclick="event.stopPropagation()"></th>
+        <th onclick="sortTable('c','nr')">Nr</th>
+        <th onclick="sortTable('c','prio')">Prio</th>
+        <th onclick="sortTable('c','naam')">Naam</th>
+        <th onclick="sortTable('c','eigenaar')">Eigenaar</th>
+        <th onclick="sortTable('c','status')">Status</th>
+        <th onclick="sortTable('c','deadline')">Deadline</th>
+        <th onclick="sortTable('c','type')">Type</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tbody-c"></tbody></table>
+    </div>
+  </div>
+
+  <!-- RISICO'S -->
+  <div class="tab-panel" id="tab-risicos">
+    <div class="action-bar">
+      <div class="toolbar">
+        <input type="text" id="search-risico" placeholder="Zoeken in risico's..." oninput="renderRisicos()">
+        <select id="status-risico" onchange="renderRisicos()">
+          <option value="">Alle statussen</option>
+          <option>Nieuw</option><option>Loopt</option><option>Afgerond</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="count-label" id="count-risico"></span>
+        <button class="btn btn-primary" onclick="openModalRisico(null)">+ Nieuw risico</button>
+      </div>
+    </div>
+    <div class="table-container">
+      <table><thead><tr>
+        <th>Nr</th>
+        <th>Beschrijving</th>
+        <th>Eigenaar</th>
+        <th>Bruto kans</th>
+        <th>Bruto impact</th>
+        <th>Netto kans</th>
+        <th>Netto impact</th>
+        <th>Mitigatie</th>
+        <th>Status</th>
+        <th>Deadline</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tbody-risico"></tbody></table>
+    </div>
+  </div>
+
+  <!-- AFHANKELIJKHEDEN & BESLUITEN -->
+  <div class="tab-panel" id="tab-afh-besluit">
+    <div class="action-bar" style="margin-bottom:12px">
+      <div class="section-title" style="margin-bottom:0">Afhankelijkheden</div>
+      <button class="btn btn-primary" onclick="openModalAfh(null)">+ Nieuwe afhankelijkheid</button>
+    </div>
+    <div class="table-container" style="margin-bottom:28px">
+      <table><thead><tr>
+        <th>Nr</th>
+        <th>Beschrijving</th>
+        <th>Eigenaar</th>
+        <th>Type</th>
+        <th>Leverdatum</th>
+        <th>Status</th>
+        <th>Toelichting</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tbody-afh"></tbody></table>
+    </div>
+    <div class="action-bar" style="margin-bottom:12px">
+      <div class="section-title" style="margin-bottom:0">Besluiten</div>
+      <button class="btn btn-primary" onclick="openModalBesluit(null)">+ Nieuw besluit</button>
+    </div>
+    <div class="table-container">
+      <table><thead><tr>
+        <th>Nr</th>
+        <th>Beschrijving</th>
+        <th>Eigenaar</th>
+        <th>Genomen in</th>
+        <th>Datum</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tbody-besluit"></tbody></table>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL ACTIES -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Nieuwe actie toevoegen</h2>
+      <button class="modal-close" onclick="closeModal()">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Nummer</label><input type="text" id="f-nr" placeholder="bijv. 1.1"></div>
+        <div class="form-group"><label>Prioriteit</label>
+          <select id="f-prio"><option value="">Geen</option><option>Zeer Hoog</option><option>Hoog</option><option>Normaal</option><option>Laag</option><option>Zeer Laag</option></select>
+        </div>
+        <div class="form-group full"><label>Naam</label><input type="text" id="f-naam" placeholder="Korte omschrijving"></div>
+        <div class="form-group"><label>Eigenaar</label><input type="text" id="f-eigenaar"></div>
+        <div class="form-group"><label>Status</label>
+          <select id="f-status"><option>Nieuw</option><option>Loopt</option><option>Afgerond</option></select>
+        </div>
+        <div class="form-group"><label>Startdatum</label><input type="date" id="f-start"></div>
+        <div class="form-group"><label>Deadline</label><input type="date" id="f-deadline"></div>
+        <div class="form-group"><label>Type</label>
+          <select id="f-type"><option>Project A</option><option>Project B</option><option>Project C</option><option>Milestone</option><option>Fase</option><option>Goal</option></select>
+        </div>
+        <div class="form-group full"><label>Uitgebreide beschrijving</label><textarea id="f-beschrijving" rows="3"></textarea></div>
+        <div class="form-group full"><label>Opmerking bij status</label><textarea id="f-opmerking" rows="2"></textarea></div>
+        <div class="form-group"><label>Deadline in gevaar?</label>
+          <select id="f-gevaar"><option>Nee</option><option>Komende Week</option><option>Ja</option></select>
+        </div>
+        <div class="form-group full" style="border-top:1px dashed var(--grijs-mid);padding-top:12px;margin-top:4px">
+          <label style="color:#888;font-size:0.65rem">KOPPELINGEN (nummers, gescheiden door puntkomma, bijv. 1;2)</label>
+        </div>
+        <div class="form-group">
+          <label>Risico nrs &nbsp;<span id="f-risico-hint" style="font-size:0.65rem;color:var(--rood);font-weight:400"></span></label>
+          <input type="text" id="f-risico" placeholder="bijv. 1;2" oninput="updateLinkHints()">
+        </div>
+        <div class="form-group">
+          <label>Afhankelijkheid nrs &nbsp;<span id="f-afh-hint" style="font-size:0.65rem;color:var(--blauw);font-weight:400"></span></label>
+          <input type="text" id="f-afh-nr" placeholder="bijv. 1;3" oninput="updateLinkHints()">
+        </div>
+        <div class="form-group">
+          <label>Besluit nrs &nbsp;<span id="f-besluit-hint" style="font-size:0.65rem;color:#856404;font-weight:400"></span></label>
+          <input type="text" id="f-besluit-nr" placeholder="bijv. 1" oninput="updateLinkHints()">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Annuleren</button>
+      <button class="btn btn-primary"   onclick="saveItem()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RISICO -->
+<div class="modal-backdrop" id="modal-risico">
+  <div class="modal">
+    <div class="modal-header" style="background:#c0392b">
+      <h2 id="mr-title">Nieuw risico toevoegen</h2>
+      <button class="modal-close" onclick="document.getElementById('modal-risico').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Beschrijving</label><textarea id="mr-beschrijving" rows="2" placeholder="Omschrijving van het risico"></textarea></div>
+        <div class="form-group"><label>Eigenaar</label><input type="text" id="mr-eigenaar"></div>
+        <div class="form-group"><label>Status</label>
+          <select id="mr-status"><option>Nieuw</option><option>Loopt</option><option>Afgerond</option></select>
+        </div>
+        <div class="form-group"><label>Bruto kans</label>
+          <select id="mr-bruto_kans"><option value="">-</option><option>Zeer Laag</option><option>Laag</option><option>Normaal</option><option>Hoog</option><option>Zeer Hoog</option></select>
+        </div>
+        <div class="form-group"><label>Bruto impact</label>
+          <select id="mr-bruto_impact"><option value="">-</option><option>Zeer Laag</option><option>Laag</option><option>Normaal</option><option>Hoog</option><option>Zeer Hoog</option></select>
+        </div>
+        <div class="form-group"><label>Netto kans (na mitigatie)</label>
+          <select id="mr-netto_kans"><option value="">-</option><option>Zeer Laag</option><option>Laag</option><option>Normaal</option><option>Hoog</option><option>Zeer Hoog</option></select>
+        </div>
+        <div class="form-group"><label>Netto impact (na mitigatie)</label>
+          <select id="mr-netto_impact"><option value="">-</option><option>Zeer Laag</option><option>Laag</option><option>Normaal</option><option>Hoog</option><option>Zeer Hoog</option></select>
+        </div>
+        <div class="form-group full"><label>Mitigatie</label><textarea id="mr-mitigatie" rows="2" placeholder="Maatregelen om het risico te verkleinen"></textarea></div>
+        <div class="form-group"><label>Deadline</label><input type="date" id="mr-deadline"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-risico').classList.remove('open')">Annuleren</button>
+      <button class="btn btn-primary" style="background:#c0392b" onclick="saveRisico()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AFHANKELIJKHEID -->
+<div class="modal-backdrop" id="modal-afh">
+  <div class="modal">
+    <div class="modal-header" style="background:#2980b9">
+      <h2 id="ma-title">Nieuwe afhankelijkheid toevoegen</h2>
+      <button class="modal-close" onclick="document.getElementById('modal-afh').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Beschrijving</label><textarea id="ma-beschrijving" rows="2" placeholder="Korte omschrijving van de afhankelijkheid"></textarea></div>
+        <div class="form-group"><label>Eigenaar</label><input type="text" id="ma-eigenaar"></div>
+        <div class="form-group"><label>Type</label><input type="text" id="ma-type" placeholder="bijv. Inkomend product/resultaat"></div>
+        <div class="form-group"><label>Leverdatum</label><input type="date" id="ma-leverdatum"></div>
+        <div class="form-group"><label>Status</label>
+          <select id="ma-status"><option>Nieuw</option><option>Loopt</option><option>Afgerond</option></select>
+        </div>
+        <div class="form-group full"><label>Toelichting</label><textarea id="ma-toelichting" rows="2" placeholder="Aanvullende toelichting"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-afh').classList.remove('open')">Annuleren</button>
+      <button class="btn btn-primary" style="background:#2980b9" onclick="saveAfh()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BESLUIT -->
+<div class="modal-backdrop" id="modal-besluit">
+  <div class="modal">
+    <div class="modal-header" style="background:#856404">
+      <h2 id="mb-title">Nieuw besluit toevoegen</h2>
+      <button class="modal-close" onclick="document.getElementById('modal-besluit').classList.remove('open')">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Beschrijving</label><textarea id="mb-beschrijving" rows="2" placeholder="Omschrijving van het besluit"></textarea></div>
+        <div class="form-group"><label>Eigenaar</label><input type="text" id="mb-eigenaar"></div>
+        <div class="form-group"><label>Genomen in</label><input type="text" id="mb-forum" placeholder="bijv. PMT overleg"></div>
+        <div class="form-group"><label>Datum</label><input type="date" id="mb-datum"></div>
+        <div class="form-group full"><label>Verwijzing / onderbouwing</label><input type="text" id="mb-verwijzing" placeholder="Link of referentie"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-besluit').classList.remove('open')">Annuleren</button>
+      <button class="btn btn-primary" style="background:#856404" onclick="saveBesluit()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+
+// =====================================================
+function excelDate(n) {
+  if (!n || isNaN(n)) return '';
+  return new Date((n - 25569) * 86400000).toISOString().slice(0,10);
+}
+
+const PROJECTS = {
+  a: { naam: 'Bewustwording zorgprofessionals' },
+  b: { naam: 'Bewustwording inwoners' },
+  c: { naam: 'Monitoring, evaluatie en borging' }
+};
+
+const SEED = {
+a: [
+  // Verhaallijnen algemeen
+  {id:'a1',  nr:'1.0',   prio:'Hoog',    naam:'Gezamenlijke verhaallijn - algemeen',              eigenaar:'Anneloes',                        beschrijving:'We maken een algemene gezamenlijke verhaallijn als basis voor de communicatiestrategie.',                                 vragen:'', risico:'',    start:'2026-04-23', deadline:'2026-06-17', gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Milestone'},
+  {id:'a2',  nr:'1.0a',  prio:'Zeer Hoog',naam:'Werkwijze gezamenlijke verhaallijn afstemmen',   eigenaar:'Anneloes',                        beschrijving:'De werkwijze afstemmen met het PMT.',                                                                                      vragen:'', risico:'',    start:'2026-04-24', deadline:'2026-04-23', gevaar:'Nee',         status:'Afgerond', opmerking:'Week later ivm vakanties, afstemmen 29 april.', type:'Project A'},
+  {id:'a3',  nr:'1.1',   prio:'Hoog',    naam:'Eerste versie gezamenlijke verhaallijn - algemeen',eigenaar:'Anneloes/ werkgroep communicatie', beschrijving:'Eerste versie: wat is palliatieve zorg en wat betekent het.',                                                            vragen:'', risico:'',    start:'2026-04-23', deadline:'2026-05-07', gevaar:'Nee',         status:'Afgerond', opmerking:'Werksessie 21 mei gepland.',         type:'Project A'},
+  {id:'a4',  nr:'1.1.1', prio:'Hoog',    naam:'Eerste eigen draft ter controle naar PMT',         eigenaar:'Anneloes',                        beschrijving:'Eerste versie van het verhaal toetsen bij het PMT via de mail.',                                                          vragen:'', risico:'',    start:'2026-04-29', deadline:'2026-05-05', gevaar:'Nee',         status:'Afgerond', opmerking:'Is gedeeld.',                        type:'Project A'},
+  {id:'a5',  nr:'1.1.2', prio:'Hoog',    naam:'Eerste draft feedback opgehaald PMT',              eigenaar:'PMT',                             beschrijving:'Feedback is binnen van het PMT op het verhaal.',                                                                           vragen:'', risico:'',    start:'2026-04-30', deadline:'2026-05-10', gevaar:'Nee',         status:'Afgerond', opmerking:'Verstuurd naar het PMT.',            type:'Project A'},
+  {id:'a6',  nr:'1.2',   prio:'Hoog',    naam:'Eerste versie verhaallijn toetsen organisaties',   eigenaar:'TA',                              beschrijving:'TA toetst de eerste versie bij bestuur/management en haalt feedback op.',                                                  vragen:'', risico:'',    start:'2026-05-21', deadline:'2026-05-25', gevaar:'Nee',         status:'Afgerond', opmerking:'TA bijeenkomst.',                    type:'Project A'},
+  {id:'a7',  nr:'1.2.1', prio:'Hoog',    naam:"TA's alvast informeren: deadline 1.2 nadert",      eigenaar:'Anneloes',                        beschrijving:"TA's op de hoogte stellen dat deadline van 1.2 eraan zit te komen.",                                                      vragen:'', risico:'5',   start:'2026-04-28', deadline:'2026-05-04', gevaar:'Nee',         status:'Afgerond', opmerking:'',                                   type:'Project A'},
+  {id:'a8',  nr:'1.3',   prio:'Hoog',    naam:'Verhaallijn finaliseren',                          eigenaar:'Anneloes/ werkgroep communicatie', beschrijving:'Verhaallijn finaliseren met werkgroep communicatie.',                                                                     vragen:'', risico:'',    start:'2026-05-26', deadline:'2026-06-08', gevaar:'Komende Week',status:'Loopt',    opmerking:'Twee weken na de TA bijeenkomst.',   type:'Project A'},
+  {id:'a9',  nr:'1.4',   prio:'Hoog',    naam:'Gezamenlijk verhaal vaststellen',                  eigenaar:'PMT',                             beschrijving:'In overleg met het PMT stellen we de verhaallijn vast.',                                                                   vragen:'', risico:'',    start:'2026-06-09', deadline:'2026-06-16', gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Project A'},
+  // Verhaallijn huisartsen
+  {id:'a10', nr:'2.0',   prio:'Hoog',    naam:'Verhaallijn Huisartsen',                           eigenaar:'Anneloes',                        beschrijving:'Sectorspecifieke verhaallijn aan de hand van de vier kernelementen.',                                                      vragen:'', risico:'1 & 2',start:'2026-07-23',deadline:'2026-07-23',  gevaar:'Nee',         status:'Loopt',    opmerking:'Deadline ook afstemmen met Denise.', type:'Milestone'},
+  {id:'a11', nr:'2.1',   prio:'Hoog',    naam:'Eerste versie verhaallijn huisartsen',              eigenaar:'Anneloes/ werkgroep communicatie', beschrijving:'Eerste versie via werksessie, gekoppeld aan vier kernelementen.',                                                         vragen:'', risico:'',    start:'2026-05-28', deadline:'2026-06-10', gevaar:'Komende Week',status:'Loopt',    opmerking:'',                                   type:'Project A'},
+  {id:'a12', nr:'2.1.1', prio:'Hoog',    naam:"Vaststellen met TA RHO: knelpunten",               eigenaar:'Anneloes/Lonneke',                beschrijving:"Sessie organiseren met TA's vanuit de RHO. Willen/Kunnen/Omgeving tabel invullen.",                                       vragen:'', risico:'',    start:'2026-04-28', deadline:'2026-06-09', gevaar:'Komende Week',status:'Loopt',    opmerking:'Deadline uitgesteld, nieuwe deadline: 9 jun.', type:'Project A'},
+  {id:'a13', nr:'2.2',   prio:'Hoog',    naam:'Eerste versie verhaallijn huisartsen toetsen',      eigenaar:'TA/communicatie',                 beschrijving:'TA toetst eerste versie bij bestuur/management.',                                                                          vragen:'', risico:'',    start:'2026-06-11', deadline:'2026-07-02', gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Project A'},
+  {id:'a14', nr:'2.3',   prio:'Hoog',    naam:'Verhaallijn huisartsen finaliseren',                eigenaar:'Anneloes/ werkgroep communicatie', beschrijving:'Verhaallijn finaliseren in werksessie.',                                                                                 vragen:'', risico:'',    start:'2026-07-03', deadline:'2026-07-08', gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Project A'},
+  {id:'a15', nr:'2.5',   prio:'Hoog',    naam:'Verhaallijn huisartsen vaststellen',                eigenaar:'PMT',                             beschrijving:'Vaststellen en communiceren naar TA/communicatiewerkgroep.',                                                               vragen:'', risico:'',    start:'2026-07-09', deadline:'2026-07-22', gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Project A'},
+  // Verhaallijn VVT
+  {id:'a18', nr:'3.0',   prio:'Normaal', naam:'Verhaallijn VVT',                                  eigenaar:'Anneloes',                        beschrijving:'Sectorspecifieke verhaallijn voor de VVT sector.',                                                                        vragen:'', risico:'1',   start:'2026-07-30', deadline:'2026-07-30', gevaar:'Nee',         status:'Nieuw',    opmerking:'',                                   type:'Milestone'},
+  {id:'a19', nr:'3.1',   prio:'',        naam:'Eerste versie verhaallijn VVT',                    eigenaar:'Anneloes/ werkgroep communicatie', beschrijving:'Eerste versie via werksessie.',                                                                                           vragen:'', risico:'',    start:'2026-06-01', deadline:'2026-06-14', gevaar:'Nee',         status:'Nieuw',    opmerking:'',                                   type:'Project A'},
+  {id:'a20', nr:'3.3',   prio:'',        naam:'Verhaallijn VVT finaliseren',                      eigenaar:'Anneloes/ werkgroep communicatie', beschrijving:'Verhaallijn VVT finaliseren.',                                                                                           vragen:'', risico:'',    start:'2026-06-29', deadline:'2026-07-18', gevaar:'Nee',         status:'Nieuw',    opmerking:'',                                   type:'Milestone'},
+  {id:'a21', nr:'3.4',   prio:'',        naam:'Verhaallijn VVT vaststellen',                      eigenaar:'PMT',                             beschrijving:'Vaststellen en communiceren.',                                                                                             vragen:'', risico:'',    start:'2026-07-19', deadline:'2026-07-29', gevaar:'Nee',         status:'Nieuw',    opmerking:'',                                   type:'Project A'},
+  // Verhaallijn Ziekenhuis
+  {id:'a22', nr:'4.0',   prio:'Normaal', naam:'Verhaallijn Ziekenhuis',                           eigenaar:'Anneloes',                        beschrijving:'Sectorspecifieke verhaallijn voor het ziekenhuis.',                                                                       vragen:'', risico:'1',   start:'2026-07-30', deadline:'2026-07-30', gevaar:'Nee',         status:'Nieuw',    opmerking:'',                                   type:'Milestone'},
+  // Toolkit en materialen
+  {id:'a25', nr:'5.1',   prio:'Normaal', naam:'Passende materialen beschikbaar - toolkit',        eigenaar:'Anneloes',                        beschrijving:'Passende materialen beschikbaar voor uitvoering campagneplan.',                                                           vragen:'', risico:'',    start:'2026-04-28', deadline:'2026-06-15', gevaar:'Nee',         status:'Afgerond', opmerking:'',                                   type:'Project A'},
+  {id:'a24', nr:'5.2',   prio:'Normaal', naam:'Communicatieplan zorgprofessionals wordt uitgevoerd',eigenaar:'TA',                            beschrijving:'Het communicatieplan wordt uitgevoerd door de TA binnen hun organisatie.',                                                  vragen:'', risico:'1',   start:'2026-08-01', deadline:'2027-08-01', gevaar:'Nee',         status:'Nieuw',    opmerking:'',                                   type:'Project A'},
+  // Handreiking bewust bekwaam handelen
+  {id:'a30', nr:'6.0',   prio:'Normaal', naam:'Handreiking Bewust bekwaam handelen',              eigenaar:'Lonneke & Anneloes',              beschrijving:'Handreiking ontwikkelen: zorgpersoneel van onbewust onbekwaam naar bewust bekwaam.',                                     vragen:'', risico:'',    start:'2026-06-01', deadline:'',            gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Project A'},
+  {id:'a31', nr:'6.1',   prio:'',        naam:'Handreiking maken (versie 1)',                     eigenaar:'',                                beschrijving:'Eerste versie van de handreiking.',                                                                                        vragen:'', risico:'',    start:'2026-06-01', deadline:'2026-06-15', gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Project A'},
+  {id:'a32', nr:'6.2',   prio:'',        naam:'Handreiking sturen naar TA (plus introtekst)',     eigenaar:'',                                beschrijving:'',                                                                                                                         vragen:'', risico:'',    start:'2026-07-16', deadline:'2026-07-16', gevaar:'Nee',         status:'Loopt',    opmerking:'',                                   type:'Milestone'},
+],
+b: [
+  // Weet u wat u wilt bijeenkomsten
+  {id:'b1',  nr:'1.0',   prio:'',        naam:'Fase 1: verkenning wuwuw',                        eigenaar:'',         beschrijving:'',                                                                                                                    vragen:'', risico:'', start:'',            deadline:'',            gevaar:'',    status:'Nieuw',    opmerking:'', type:'Milestone'},
+  {id:'b2',  nr:'1.1',   prio:'',        naam:'Organisatieoverzicht wuwuw bijeenkomsten',         eigenaar:'Anneloes', beschrijving:'Hoe worden de Weet u wat u wilt bijeenkomsten georganiseerd, wat zijn de verschillende routes.',                      vragen:'', risico:'', start:'2026-06-05', deadline:'2026-06-30', gevaar:'Nee', status:'Loopt',    opmerking:'Samen met de Netwerken PZ', type:'Project B'},
+  {id:'b3',  nr:'1.2',   prio:'',        naam:'Overzicht gehouden wuwuw bijeenkomsten',           eigenaar:'Anneloes', beschrijving:'Overzicht van bijeenkomsten dit jaar en welke er mogelijk worden georganiseerd.',                                      vragen:'', risico:'', start:'2026-06-05', deadline:'2026-06-12', gevaar:'Nee', status:'Loopt',    opmerking:'', type:'Project B'},
+  {id:'b4',  nr:'1.3',   prio:'Hoog',    naam:'Verkennen mogelijke borgingsstructuren wuwuw',     eigenaar:'Anneloes', beschrijving:'Via werksessies verkennen wat mogelijke borgingsstructuren zijn voor de wuwuw bijeenkomsten.',                        vragen:'', risico:'', start:'2026-08-03', deadline:'2026-10-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b5',  nr:'1.4',   prio:'Hoog',    naam:'Functionaliteiten website - onderdeel transformatie?',eigenaar:'Anneloes',beschrijving:'Uitzoeken of de functionaliteiten van de website valt onder het transformatieplan.',                              vragen:'', risico:'', start:'2026-05-06', deadline:'2026-05-07', gevaar:'Nee', status:'Afgerond', opmerking:'Besluit: kan waarschijnlijk bij project Radelijn.', type:'Goal'},
+  {id:'b6',  nr:'2.0',   prio:'',        naam:'Fase 2: uitvoering en borging wuwuw',              eigenaar:'',         beschrijving:'',                                                                                                                    vragen:'', risico:'', start:'',            deadline:'',            gevaar:'',    status:'Nieuw',    opmerking:'', type:'Milestone'},
+  {id:'b7',  nr:'2.1',   prio:'',        naam:'Werksessies borging wuwuw',                        eigenaar:'',         beschrijving:'Via verschillende werksessies de mogelijke borgingsstructuren verkennen.',                                           vragen:'', risico:'', start:'2026-08-17', deadline:'2026-10-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b8',  nr:'2.2',   prio:'',        naam:'Uitwerken eerste versie regionaal kader wuwuw',    eigenaar:'',         beschrijving:'Uitwerken van een regionaal kader voor het borgen van de Weet u wat u wilt bijeenkomsten.',                          vragen:'', risico:'', start:'2026-11-02', deadline:'2026-11-30', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b9',  nr:'2.3',   prio:'',        naam:'Vaststellen regionaal kader wuwuw',                eigenaar:'',         beschrijving:'Vaststellen van een regionaal kader voor de borging.',                                                               vragen:'', risico:'', start:'2026-12-16', deadline:'2026-12-16', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Milestone'},
+  {id:'b10', nr:'2.4',   prio:'',        naam:'Boost geven aan wuwuw bijeenkomsten',              eigenaar:'TA',        beschrijving:'Een boost geven aan het aantal georganiseerde bijeenkomsten.',                                                      vragen:'', risico:'', start:'2026-08-17', deadline:'2026-11-08', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b11', nr:'2.5',   prio:'Hoog',    naam:'Website weetuwatuwilt.nl verbeteren',              eigenaar:'Anneloes', beschrijving:'De website weetuwatuwilt.nl is nu erg veel handmatig werk, dit moet beter worden ingericht.',                       vragen:'', risico:'', start:'2026-06-01', deadline:'2026-08-30', gevaar:'Nee', status:'Loopt',    opmerking:'', type:'Project B'},
+  {id:'b12', nr:'2.5.1', prio:'Normaal', naam:'Overzicht van wensen website',                    eigenaar:'Anneloes', beschrijving:'Overzicht maken voor de developer van de wensen voor de website van weetuwatuwilt.nl',                             vragen:'', risico:'', start:'2026-06-01', deadline:'2026-06-15', gevaar:'Nee', status:'Loopt',    opmerking:'', type:'Project B'},
+  {id:'b13', nr:'2.5.2', prio:'Normaal', naam:'Afspraak developer website',                      eigenaar:'Anneloes', beschrijving:'Bespreken van de wensen met Mimi, samen met Madieke',                                                              vragen:'', risico:'', start:'2026-06-15', deadline:'2026-06-22', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b14', nr:'2.5.3', prio:'Normaal', naam:'Uitwerking wensen + testen',                      eigenaar:'Developer',beschrijving:'',                                                                                                                    vragen:'', risico:'', start:'2026-06-22', deadline:'2026-07-20', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b15', nr:'2.5.4', prio:'Normaal', naam:'Live website weetuwatuwilt.nl',                   eigenaar:'Anneloes', beschrijving:'',                                                                                                                    vragen:'', risico:'', start:'2026-08-03', deadline:'2026-08-04', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Milestone'},
+  // Week van de Palliatieve Zorg
+  {id:'b16', nr:'3.0',   prio:'Laag',    naam:'Week PZ: Inspiratiefase (mei/juni)',               eigenaar:'Anneloes', beschrijving:'Inspiratiefase Week van de Palliatieve Zorg.',                                                                       vragen:'', risico:'', start:'2026-05-01', deadline:'2026-06-29', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b17', nr:'3.1',   prio:'Laag',    naam:'Delen social media vanuit PZNL',                  eigenaar:'TA',        beschrijving:'Delen van de content vanuit PZNL op de verschillende communicatieplatforms.',                                       vragen:'', risico:'', start:'2026-05-18', deadline:'2026-06-29', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b18', nr:'3.2',   prio:'Normaal', naam:'Update geven aan TA over Week PZ',                eigenaar:'Anneloes', beschrijving:'Tijdens de bijeenkomst van de transformatieaanjagers stilstaan bij de toolkit van PZNL.',                           vragen:'', risico:'', start:'2026-05-26', deadline:'2026-05-26', gevaar:'Nee', status:'Afgerond', opmerking:'', type:'Project B'},
+  {id:'b19', nr:'3.3',   prio:'Laag',    naam:'Inventariseren of organisaties iets organiseren', eigenaar:'Anneloes', beschrijving:'Inventariseren aan het eind van de inspiratieperiode of er TA organisaties zijn die iets organiseren.',             vragen:'', risico:'', start:'2026-06-22', deadline:'2026-06-30', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b20', nr:'3.4',   prio:'Zeer Laag',naam:'Inventariseren andere organisaties Week PZ',     eigenaar:'Anneloes', beschrijving:'',                                                                                                                    vragen:'Is dit nodig of blijft dat onderdeel van wat het netwerk doet?', risico:'', start:'2026-06-08', deadline:'2026-06-29', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project B'},
+  {id:'b21', nr:'3.5',   prio:'Normaal', naam:'Overzicht lopende campagnes in MiddenNL',         eigenaar:'Anneloes', beschrijving:'Overzicht creeren van verschillende campagnes binnen MiddenNL die voor verwarring kunnen zorgen.',                    vragen:'', risico:'', start:'2026-06-08', deadline:'2026-06-29', gevaar:'Nee', status:'Loopt',    opmerking:'', type:'Project B'},
+  {id:'b22', nr:'3.6',   prio:'Normaal', naam:'Overzicht: waar besteden we aandacht aan',        eigenaar:'Anneloes', beschrijving:'Overzicht van activiteiten en middelen waaraan we aandacht besteden.',                                              vragen:'', risico:'5', start:'2026-05-18', deadline:'2026-06-01', gevaar:'Ja',  status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b23', nr:'4.0',   prio:'Normaal', naam:'Week PZ: Organisatiefase (juli/sep)',              eigenaar:'',         beschrijving:'',                                                                                                                    vragen:'', risico:'', start:'2026-07-01', deadline:'2026-08-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b24', nr:'4.1',   prio:'Normaal', naam:'Campagne MiddenNL Week PZ',                       eigenaar:'Anneloes/communicatie medewerker',beschrijving:'Overzicht welke campagnematerialen gaan we gebruiken richting het algemeen publiek.',         vragen:'', risico:'4', start:'2026-07-06', deadline:'2026-07-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b25', nr:'4.2',   prio:'Normaal', naam:'Bekendheid creeren Week van de Palliatieve Zorg', eigenaar:'Anneloes/communicatie medewerker',beschrijving:'Bekendheid creeren en aansturen op aanmelden van acties bij PZNL.',                          vragen:'', risico:'', start:'2026-08-17', deadline:'2026-08-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b26', nr:'4.3',   prio:'Normaal', naam:'Campagnekanalen vaststellen in MiddenNL',         eigenaar:'Communicatie medewerker',         beschrijving:'',                                                                                                vragen:'Wat is hiervoor de tijdlijn?', risico:'', start:'2026-08-17', deadline:'2026-10-06', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project B'},
+  {id:'b27', nr:'4.4',   prio:'Normaal', naam:'Werksessie TA: inzet Week Palliatieve Zorg',      eigenaar:'TA',        beschrijving:'Per sector plan maken voor communicatie-inzet tijdens Week Palliatieve Zorg.',                                       vragen:'', risico:'', start:'2026-06-15', deadline:'2026-07-02', gevaar:'Nee', status:'Loopt',    opmerking:'', type:'Project B'},
+  {id:'b28', nr:'5.0',   prio:'',        naam:'Week PZ: Uitvoeringsfase (okt)',                  eigenaar:'Anneloes', beschrijving:'Uitvoeren van de campagne en activiteiten tijdens de Week van de Palliatieve Zorg.',                                 vragen:'', risico:'', start:'2026-10-10', deadline:'2026-10-17', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b29', nr:'5.1',   prio:'Normaal', naam:'Evaluatie Week Palliatieve Zorg',                 eigenaar:'TA',        beschrijving:'Evaluatie van de uitgevoerde activiteiten.',                                                                         vragen:'', risico:'', start:'2026-10-10', deadline:'2026-10-12', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  // Lokale campagne en doorlopende bewustwording inwoners
+  {id:'b30', nr:'6.0',   prio:'Normaal', naam:'Lokale campagne opzetten',                        eigenaar:'Anneloes + com adviseur',         beschrijving:'',                                                                                                vragen:'', risico:'', start:'2026-08-01', deadline:'2027-12-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b31', nr:'6.1',   prio:'Normaal', naam:'Lokale campagnekanalen vaststellen',              eigenaar:'Com adviseur',                    beschrijving:'',                                                                                                vragen:'', risico:'', start:'2026-08-01', deadline:'2026-08-22', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b32', nr:'6.2',   prio:'Normaal', naam:'Campagnemateriaal aanpassen - laaggeletterd',     eigenaar:'Com adviseur + Anneloes',         beschrijving:'',                                                                                                vragen:'', risico:'', start:'2026-09-01', deadline:'2026-10-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b33', nr:'6.3',   prio:'Normaal', naam:'Campagnemateriaal aanpassen - Turks/Marokkaanse doelgroep',eigenaar:'Com adviseur + Anneloes',beschrijving:'',                                                                                            vragen:'', risico:'', start:'2026-09-01', deadline:'2026-10-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b34', nr:'6.4',   prio:'Normaal', naam:'Campagne uitzetten Week Palliatieve Zorg 2027',   eigenaar:'Com adviseur + Anneloes',         beschrijving:'',                                                                                                vragen:'', risico:'', start:'2027-09-01', deadline:'2027-09-15', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  {id:'b35', nr:'6.5',   prio:'Normaal', naam:'Campagnemateriaal uitzetten doorlopend het jaar', eigenaar:'Com adviseur + Anneloes',         beschrijving:'',                                                                                                vragen:'', risico:'', start:'2026-11-01', deadline:'2027-12-31', gevaar:'Nee', status:'Nieuw',    opmerking:'', type:'Project B'},
+  // Loket palliatieve zorg
+  {id:'b36', nr:'7.0',   prio:'Normaal', naam:'Loket palliatieve zorg: verkennen informatiepunten',eigenaar:'Anneloes',                     beschrijving:'Verkennen welke bestaande informatiepunten en -structuren benut, verbonden of geselecteerd kunnen worden tot een herkenbaar punt voor inwoners, patienten, naasten en zorgverleners. Zoals Wegwijzer Laatste Levensfase, Weetwatuwilt.nl, Leventothetlaatst.nl, Overpalliatievezorg.nl.', vragen:'', risico:'', start:'2026-06-09', deadline:'2026-07-15', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project B'},
+  {id:'b37', nr:'7.1',   prio:'Normaal', naam:'Loket: voorstel inrichting aan PMT',              eigenaar:'Anneloes',                        beschrijving:'Voorstel opstellen voor de inrichting van het (centraal) loket/informatiepunt palliatieve zorg en voorleggen aan het PMT.',  vragen:'', risico:'', start:'2026-07-15', deadline:'2026-08-01', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project B'},
+  {id:'b38', nr:'7.2',   prio:'Normaal', naam:'Loket: uitwerken voorstel op basis verkenning',   eigenaar:'Anneloes',                        beschrijving:'Het voorstel voor de inrichting van het loket palliatieve zorg uitwerken op basis van de uitkomsten van de verkenningsfase.', vragen:'', risico:'', start:'2026-08-01', deadline:'2026-09-01', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project B'},
+  {id:'b39', nr:'7.3',   prio:'Normaal', naam:'Loket: indien nodig inrichten',                   eigenaar:'Anneloes',                        beschrijving:'Indien besloten: het loket palliatieve zorg inrichten en toegankelijk maken.',                                              vragen:'', risico:'', start:'2026-09-01', deadline:'2026-11-01', gevaar:'Nee', status:'Nieuw', opmerking:'Afhankelijk van besluit PMT.', type:'Project B'},
+],
+c: [
+  // Monitoring en evaluatie
+  {id:'c1',  nr:'1.0',   prio:'Hoog',    naam:'Monitoringsplan bereik en effectiviteit',         eigenaar:'Anneloes + com adviseur',         beschrijving:'Ontwikkelen van een monitoringsplan voor het volgen van bereik en effectiviteit van bijeenkomsten en campagnes onder inwoners en zorgprofessionals.',  vragen:'', risico:'', start:'2026-06-09', deadline:'2026-08-01', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c2',  nr:'1.1',   prio:'Hoog',    naam:'Evaluatieplan bewustwording inwoners',            eigenaar:'Anneloes + com adviseur',         beschrijving:'Evaluatieplan opstellen voor bewustwording inwoners in de regio Midden-Nederland.',                                         vragen:'', risico:'', start:'2026-07-01', deadline:'2027-12-31', gevaar:'Nee', status:'Loopt', opmerking:'', type:'Project C'},
+  {id:'c3',  nr:'1.2',   prio:'Hoog',    naam:'Nulmeting vragenlijst opstellen',                 eigenaar:'Anneloes + com adviseur',         beschrijving:'Opstellen van de vragenlijst voor de nulmeting.',                                                                           vragen:'', risico:'', start:'2026-07-22', deadline:'2026-08-05', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c4',  nr:'1.3',   prio:'Hoog',    naam:'Organisatie uitzoeken voor nulmeting',            eigenaar:'Com adviseur',                    beschrijving:'Uitzoeken wie een nulmeting kan uitvoeren in de regio (en een 1e/2e meting).',                                              vragen:'', risico:'', start:'2026-07-01', deadline:'2026-07-22', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c5',  nr:'1.4',   prio:'Hoog',    naam:'Uitzetten nulmeting',                             eigenaar:'Com adviseur',                    beschrijving:'',                                                                                                                          vragen:'', risico:'', start:'2026-08-05', deadline:'2026-08-26', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c6',  nr:'1.5',   prio:'Normaal', naam:'Resultaten nulmeting verwerken',                  eigenaar:'Anneloes + com adviseur',         beschrijving:'',                                                                                                                          vragen:'', risico:'', start:'2026-08-26', deadline:'2026-09-25', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c7',  nr:'1.6',   prio:'Normaal', naam:'Plannen 1e/2e meting',                            eigenaar:'Anneloes + com adviseur',         beschrijving:'Plannen van de 1e of eventueel 2e meting aan het einde van de transformatieperiode.',                                     vragen:'', risico:'', start:'2026-09-25', deadline:'2026-10-09', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c8',  nr:'1.7',   prio:'Normaal', naam:'Eerste versie evaluatieplan terugkoppelen naar TA',eigenaar:'Anneloes',                       beschrijving:'Eerste versie terugkoppelen en finaliseren ter goedkeuring PMT.',                                                          vragen:'', risico:'', start:'2026-07-23', deadline:'2026-07-30', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Milestone'},
+  {id:'c9',  nr:'1.8',   prio:'Normaal', naam:'Uitzetten 1e meting',                             eigenaar:'Com adviseur',                    beschrijving:'Uitzetten van de opvolgende meting.',                                                                                      vragen:'', risico:'', start:'2027-10-01', deadline:'2027-10-15', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c10', nr:'1.9',   prio:'Normaal', naam:'Verwerken resultaten meting',                     eigenaar:'Anneloes + com adviseur',         beschrijving:'Verwerken van de resultaten en advies schrijven.',                                                                         vragen:'', risico:'', start:'2027-12-31', deadline:'2028-01-14', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c11', nr:'1.10',  prio:'Normaal', naam:'Resultaten metingen',                             eigenaar:'Anneloes + com adviseur',         beschrijving:'',                                                                                                                          vragen:'', risico:'', start:'',            deadline:'',            gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Milestone'},
+  // Tussentijdse rapportages
+  {id:'c12', nr:'2.0',   prio:'Normaal', naam:'Tussentijdse rapportage PMT/stuurgroep (2026)',   eigenaar:'Anneloes',                        beschrijving:'Aanleveren van tussentijdse rapportage aan PMT en stuurgroep over voortgang actielijn en bijdrage aan de transformatie.',  vragen:'', risico:'', start:'2026-09-01', deadline:'2026-10-01', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c13', nr:'2.1',   prio:'Normaal', naam:'Tussentijdse rapportage PMT/stuurgroep (2027)',   eigenaar:'Anneloes',                        beschrijving:'Aanleveren van tussentijdse rapportage aan PMT en stuurgroep over voortgang actielijn en bijdrage aan de transformatie.',  vragen:'', risico:'', start:'2027-03-01', deadline:'2027-04-01', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  // Borging
+  {id:'c14', nr:'3.0',   prio:'Hoog',    naam:'Borgingsafspraken met kernpartners',              eigenaar:'Anneloes',                        beschrijving:'Concrete afspraken maken met betrokken organisaties over eigenaarschap, uitvoering, samenwerking en structurele financiering van bewustwordingsactiviteiten na de transformatieperiode.', vragen:'', risico:'', start:'2027-07-01', deadline:'2027-11-01', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c15', nr:'3.1',   prio:'Hoog',    naam:'Evaluatie campagneplan en actielijn',             eigenaar:'Anneloes',                        beschrijving:'Het evalueren van het campagneplan en analyseren in hoeverre de actielijn heeft bijgedragen aan de doelstellingen van de transformatie palliatieve zorg.', vragen:'', risico:'', start:'2027-07-01', deadline:'2027-11-01', gevaar:'Nee', status:'Nieuw', opmerking:'', type:'Project C'},
+  {id:'c16', nr:'3.2',   prio:'Hoog',    naam:'KPI 28: Borgingsplan + regionale evaluatie',      eigenaar:'Anneloes',                        beschrijving:'Opstellen van het borgingsplan voor de actielijn Maatschappelijke bewustwording en opleveren van de regionale evaluatie van de transformatie voor de regio Midden-Nederland.', vragen:'', risico:'', start:'2027-11-01', deadline:'2027-12-01', gevaar:'Nee', status:'Nieuw', opmerking:'Op te leveren december 2027.', type:'Milestone'},
+]
+};
+
+// =====================================================
+// LINKED ITEM HELPERS
+// =====================================================
+
+function parseNrs(str) {
+  if (!str) return [];
+  return str.split(/[;,\s]+/).map(s=>s.trim()).filter(Boolean).map(s=>parseInt(s)).filter(n=>!isNaN(n));
+}
+
+function getLinkedRisicos(item) {
+  const nrs = parseNrs(item.risico);
+  return state.risicos.filter(r => nrs.includes(r.nr));
+}
+
+function getLinkedAfh(item) {
+  const nrs = parseNrs(item.afh_nr);
+  return state.afhankelijkheden.filter(a => nrs.includes(a.nr));
+}
+
+function getLinkedBesluiten(item) {
+  const nrs = parseNrs(item.besluit_nr);
+  return state.besluiten.filter(b => nrs.includes(b.nr));
+}
+
+function nextNr(arr) {
+  if (!arr.length) return 1;
+  return Math.max(...arr.map(x=>x.nr||0)) + 1;
+}
+
+function kansBadge(kans) {
+  if (!kans) return '';
+  const map = { 'Zeer Hoog':'kans-zeerhoog','Hoog':'kans-hoog','Normaal':'kans-normaal','Laag':'kans-laag','Zeer Laag':'kans-laag' };
+  return `<span class="kans-badge ${map[kans]||''}">${kans}</span>`;
+}
+
+// =====================================================
+// STATE
+// =====================================================
+const STORAGE_KEY = 'tpz_v5';
+let state = { a:[], b:[], c:[], risicos:[], afhankelijkheden:[], besluiten:[] };
+let sortState = { a:{col:null,dir:1}, b:{col:null,dir:1}, c:{col:null,dir:1} };
+
+const SEED_RISICOS = [
+  { id:'r1', nr:1, beschrijving:'Niet iedereen ervaart het verhaal als compleet of voelt zich niet betrokken', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Normaal', mitigatie:'Extra aandacht geven aan de werksessies zodat er voldoende tijd is voor discussie en dat er een gedragen verhaal komt', netto_kans:'Laag', netto_impact:'Normaal', deadline:'2026-04-11', status:'Loopt' },
+  { id:'r2', nr:2, beschrijving:'De term markeren is niet duidelijk genoeg: bij markeren wordt gedacht aan markeren van de palliatieve fase in plaats van markeren van het laatste levensjaar', eigenaar:'Denise', bruto_kans:'Zeer Hoog', bruto_impact:'Hoog', mitigatie:'Opnemen in de verhaallijnen en in de werkafspraken dat het gaat om markeren van het laatste levensjaar', netto_kans:'Normaal', netto_impact:'Normaal', deadline:'2026-06-01', status:'Loopt' },
+  { id:'r3', nr:3, beschrijving:'Slechte betrokkenheid van communicatieadviseurs instellingen', eigenaar:'Anneloes', bruto_kans:'Zeer Hoog', bruto_impact:'Hoog', mitigatie:'Uitwerken van projectplan, en duidelijker communiceren wat we van hen verwachten en wat we gaan doen in de werksessie', netto_kans:'Laag', netto_impact:'Laag', deadline:'2026-04-02', status:'Loopt' },
+  { id:'r4', nr:4, beschrijving:'Communicatie over de transformatie wordt verward met communicatie ten behoeve van bewustwording', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Normaal', mitigatie:'In de overleggen met de communicatieadviseurs steeds goed dit onderscheid agenderen', netto_kans:'Laag', netto_impact:'Laag', deadline:'2028-04-10', status:'Nieuw' },
+  { id:'r5', nr:5, beschrijving:"De TA's hebben te weinig tijd om dit goed intern af te stemmen", eigenaar:'Anneloes', bruto_kans:'Normaal', bruto_impact:'Laag', mitigatie:'Na overleg van PMT alvast communiceren dat het eraan komt, dan weten ze het al en kunnen ze tijd inplannen', netto_kans:'Laag', netto_impact:'Laag', deadline:'2026-02-25', status:'Nieuw' },
+  { id:'r6', nr:6, beschrijving:'De verhalen moeten inhoudelijk goed aansluiten bij het beoogd zorgsysteem', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Zeer Hoog', mitigatie:'Blijven afstemmen met Denise bij de verschillende verhaallijnen', netto_kans:'Laag', netto_impact:'Laag', deadline:'', status:'Nieuw' },
+  { id:'r7', nr:7, beschrijving:'Algemeen publiek krijgt geen eenduidig beeld van wat palliatieve zorg is', eigenaar:'Anneloes', bruto_kans:'Normaal', bruto_impact:'Hoog', mitigatie:'Overzicht creëren en onderzoeken hoe we dit toch op elkaar kunnen afstemmen', netto_kans:'Normaal', netto_impact:'Normaal', deadline:'2026-10-08', status:'Nieuw' },
+  { id:'r8', nr:8, beschrijving:'Het aanmeldproces voor bijeenkomsten kost veel tijd aan back-office', eigenaar:'Anneloes', bruto_kans:'Hoog', bruto_impact:'Normaal', mitigatie:'Website opnieuw inrichten zodat er minder handmatige handelingen zijn', netto_kans:'Laag', netto_impact:'Laag', deadline:'2027-01-29', status:'Nieuw' },
+];
+
+const SEED_AFHANKELIJKHEDEN = [
+  { id:'d1', nr:1, beschrijving:"Ingevulde format 'willen kunnen omgeving' door de TA", eigenaar:'Lonneke', type:'Inkomend product/resultaat', leverdatum:'2026-03-15', status:'Nieuw', toelichting:'Lonneke organiseert workshop met de TA om te bepalen waar er noodzaak is binnen de bepaalde sector/organisatie' },
+  { id:'d2', nr:2, beschrijving:'Betrokkenheid Margot', eigenaar:'Anneloes', type:'', leverdatum:'2026-04-02', status:'Loopt', toelichting:'Het zou handig zijn als Margot nog kan adviseren/ondersteunen in de voorbereiding van de werksessie voor het gezamenlijke verhaal. Overleggen met Michelle/PMT naar mogelijkheden' },
+  { id:'d3', nr:3, beschrijving:'Communicatieplan voor interne communicatie is afgerond', eigenaar:'TA', type:'', leverdatum:'2026-06-12', status:'Nieuw', toelichting:'De communicatieplannen voor de interne communicatie zijn gemaakt en de geschikte communicatiekanalen zijn bekend. Dit checken in de PvA-gesprekken. Ook gekoppeld aan risico 3' },
+  { id:'d4', nr:4, beschrijving:'Passende materialen zijn beschikbaar, toolkit', eigenaar:'Anneloes', type:'', leverdatum:'2026-05-02', status:'Loopt', toelichting:'Het afronden van de toolkit voor de TA. De actie wordt vermeld in project A' },
+  { id:'d5', nr:5, beschrijving:'Afspraken binnen TPZ: waar zijn we van', eigenaar:'Michelle', type:'', leverdatum:'2026-04-28', status:'Loopt', toelichting:'Waar zijn we allemaal van binnen de transformatie' },
+  { id:'d6', nr:6, beschrijving:'Gedragingen markering is af', eigenaar:'Lonneke', type:'', leverdatum:'', status:'Loopt', toelichting:'Overleggen met Michelle/PMT naar mogelijkheden' },
+];
+
+const SEED_BESLUITEN = [
+  { id:'b1', nr:1, beschrijving:'Werkwijze verhaallijn - algemeen & RHO', eigenaar:'Anneloes', forum:'Projectleider overleg', datum:'2026-03-24', verwijzing:'' },
+];
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const p = JSON.parse(raw);
+      ['a','b','c'].forEach(k => { state[k] = (p[k] && p[k].length) ? p[k] : JSON.parse(JSON.stringify(SEED[k])); });
+      state.risicos        = (p.risicos        && p.risicos.length)        ? p.risicos        : JSON.parse(JSON.stringify(SEED_RISICOS));
+      state.afhankelijkheden = (p.afhankelijkheden && p.afhankelijkheden.length) ? p.afhankelijkheden : JSON.parse(JSON.stringify(SEED_AFHANKELIJKHEDEN));
+      state.besluiten      = (p.besluiten      && p.besluiten.length)      ? p.besluiten      : JSON.parse(JSON.stringify(SEED_BESLUITEN));
+    } else {
+      ['a','b','c'].forEach(k => { state[k] = JSON.parse(JSON.stringify(SEED[k])); });
+      state.risicos          = JSON.parse(JSON.stringify(SEED_RISICOS));
+      state.afhankelijkheden = JSON.parse(JSON.stringify(SEED_AFHANKELIJKHEDEN));
+      state.besluiten        = JSON.parse(JSON.stringify(SEED_BESLUITEN));
+    }
+  } catch(e) {
+    ['a','b','c'].forEach(k => { state[k] = JSON.parse(JSON.stringify(SEED[k])); });
+    state.risicos          = JSON.parse(JSON.stringify(SEED_RISICOS));
+    state.afhankelijkheden = JSON.parse(JSON.stringify(SEED_AFHANKELIJKHEDEN));
+    state.besluiten        = JSON.parse(JSON.stringify(SEED_BESLUITEN));
+  }
+}
+
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+// =====================================================
+// DEADLINE HELPERS (live berekening op basis van vandaag)
+// =====================================================
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+
+function deadlineStatus(item) {
+  // Eigen "gevaar" veld overschrijft niet, we berekenen altijd opnieuw
+  if (!item.deadline) return 'geen';
+  const d = new Date(item.deadline); d.setHours(0,0,0,0);
+  if (d < TODAY) return 'verlopen';
+  const diff = (d - TODAY) / 86400000;
+  if (diff <= 7) return 'komend';
+  return 'ok';
+}
+
+function deadlineClass(item) {
+  const s = deadlineStatus(item);
+  if (s === 'verlopen') return 'deadline-verlopen';
+  if (s === 'komend')   return 'deadline-komend';
+  return '';
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const [y,m,d] = iso.split('-');
+  return `${d}-${m}-${y}`;
+}
+
+// =====================================================
+// BADGES
+// =====================================================
+function statusBadge(item) {
+  const isMilestone = (item.type||'').toLowerCase().includes('milestone');
+  if (isMilestone) return '<span class="badge badge-milestone">Milestone</span>';
+  const map = { 'Afgerond':'badge-afgerond', 'Loopt':'badge-loopt', 'Nieuw':'badge-nieuw' };
+  let html = `<span class="badge ${map[item.status]||'badge-nieuw'}">${item.status||'Nieuw'}</span>`;
+  const ds = deadlineStatus(item);
+  if (item.status !== 'Afgerond') {
+    if (ds === 'verlopen') html += ' <span class="badge badge-rood">Verlopen!</span>';
+    else if (ds === 'komend') html += ' <span class="badge badge-gevaar">Let op</span>';
+  }
+  return html;
+}
+
+function prioBadge(prio) {
+  if (!prio) return '';
+  const map = { 'Zeer Hoog':'prio-zeerhoog','Hoog':'prio-hoog','Normaal':'prio-normaal','Laag':'prio-laag','Zeer Laag':'prio-laag' };
+  return `<span class="prio ${map[prio]||''}">${prio}</span>`;
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,5); }
+
+// =====================================================
+// RENDER TABLES
+// =====================================================
+function renderAll() {
+  renderProjectCards();
+  renderTable('a'); renderTable('b'); renderTable('c');
+  renderTableAll();
+  renderGantt();
+  renderRisicos();
+  renderAfhBesluit();
+}
+
+function renderProjectCards() {
+  document.getElementById('project-cards').innerHTML = ['a','b','c'].map(k => {
+    const items = state[k];
+    const aantallen = { afgerond: items.filter(i=>i.status==='Afgerond').length, loopt: items.filter(i=>i.status==='Loopt').length, nieuw: items.filter(i=>i.status==='Nieuw').length };
+    const verlopen = items.filter(i => i.status!=='Afgerond' && deadlineStatus(i)==='verlopen').length;
+    const komend   = items.filter(i => i.status!=='Afgerond' && deadlineStatus(i)==='komend').length;
+    return `<div class="project-card">
+      <h3>${esc(PROJECTS[k].naam)}</h3>
+      <div class="stat-row">
+        <div class="stat-pill"><span class="dot" style="background:#1a6630"></span>${aantallen.afgerond} afgerond</div>
+        <div class="stat-pill"><span class="dot" style="background:#004085"></span>${aantallen.loopt} loopt</div>
+        <div class="stat-pill"><span class="dot" style="background:#999"></span>${aantallen.nieuw} nieuw</div>
+        ${verlopen ? `<div class="stat-pill"><span class="dot" style="background:var(--rood)"></span>${verlopen} verlopen</div>` : ''}
+        ${komend   ? `<div class="stat-pill"><span class="dot" style="background:var(--oranje)"></span>${komend} nadert</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getFiltered(key) {
+  const search = (document.getElementById('search-'+key)?.value||'').toLowerCase();
+  const status = document.getElementById('status-'+key)?.value||'';
+  const prio   = document.getElementById('prio-'+key)?.value||'';
+  return state[key].filter(item => {
+    const ms = !search || ['naam','eigenaar','nr','beschrijving','opmerking'].some(f => (item[f]||'').toLowerCase().includes(search));
+    const mst = !status || item.status===status;
+    const mp  = !prio   || item.prio===prio;
+    return ms && mst && mp;
+  });
+}
+
+function renderTable(key) {
+  const items = getFiltered(key);
+  const countEl = document.getElementById('count-'+key);
+  if (countEl) countEl.innerHTML = `<strong>${items.length}</strong> van ${state[key].length} acties`;
+  const tbody = document.getElementById('tbody-'+key);
+  if (!items.length) { tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--grijs-mid)">Geen acties gevonden.</td></tr>`; return; }
+  tbody.innerHTML = items.map(item => {
+    const isMilestone = (item.type||'').toLowerCase().includes('milestone');
+    const dlc = deadlineClass(item);
+    const isChecked = !!_selection[key+':'+item.id];
+    return `<tr class="${isMilestone?'milestone-row':''} row-expandable${isChecked?' selected-row':''}" onclick="toggleDetail('${key}','${item.id}')">
+      <td class="cb-cell" onclick="event.stopPropagation()">
+        <input type="checkbox" id="cb-${key}-${item.id}" class="row-cb" ${isChecked?'checked':''} onchange="toggleRowSelect('${key}','${item.id}',this,event)">
+      </td>
+      <td class="num">${esc(item.nr)}</td>
+      <td>${prioBadge(item.prio)}</td>
+      <td class="naam">${item.subgroep==='weekpz'?'<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#6b9e8f;margin-right:5px;flex-shrink:0;vertical-align:middle"></span>':item.subgroep==='inwoners'?'<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--groen-licht);margin-right:5px;flex-shrink:0;vertical-align:middle"></span>':''}${esc(item.naam)}</td>
+      <td><span class="tag-user">${esc(item.eigenaar)}</span></td>
+      <td>${statusBadge(item)}</td>
+      <td class="${dlc} num">${formatDate(item.deadline)}</td>
+      <td style="color:#888;font-size:0.7rem">${esc(item.type)}</td>
+      <td onclick="event.stopPropagation()" style="white-space:nowrap">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="editItem('${key}','${item.id}')" title="Bewerken">&#9998;</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteItem('${key}','${item.id}')" title="Verwijderen">&#128465;</button>
+      </td>
+    </tr>
+    <tr class="row-detail" id="detail-${key}-${item.id}">
+      <td colspan="9">
+        <div class="detail-grid">
+          ${item.beschrijving?`<div class="detail-item" style="grid-column:1/-1"><label>Beschrijving</label><p>${esc(item.beschrijving)}</p></div>`:''}
+          ${item.opmerking?`<div class="detail-item" style="grid-column:1/-1"><label>Opmerking</label><p><em>${esc(item.opmerking)}</em></p></div>`:''}
+          ${item.vragen?`<div class="detail-item" style="grid-column:1/-1"><label>Vragen ter voorbereiding</label><p>${esc(item.vragen)}</p></div>`:''}
+          <div class="detail-item"><label>Startdatum</label><p>${formatDate(item.start)||'-'}</p></div>
+          <div class="detail-item"><label>Deadline</label><p class="${dlc}">${formatDate(item.deadline)||'-'}</p></div>
+          ${item.risico?`<div class="detail-item"><label>Gerelateerd risico</label><p>${esc(item.risico)}</p></div>`:''}
+        </div>
+        ${renderLinkedItems(item)}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTableAll() {
+  const tbody = document.getElementById('tbody-all');
+  const allOpen = ['a','b','c'].flatMap(k => state[k].filter(i=>i.status!=='Afgerond').map(i=>({...i,_k:k})));
+  if (!allOpen.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--grijs-mid)">Geen openstaande acties.</td></tr>`; return; }
+  const labels = { a:'Bewustwording', b:'Weet u wat u wilt', c:'Bewustwording inwoners' };
+  tbody.innerHTML = allOpen.map(item => {
+    const dlc = deadlineClass(item);
+    return `<tr>
+      <td style="font-size:0.7rem;color:#888">${labels[item._k]}</td>
+      <td class="num">${esc(item.nr)}</td>
+      <td class="naam">${esc(item.naam)}</td>
+      <td><span class="tag-user">${esc(item.eigenaar)}</span></td>
+      <td>${statusBadge(item)}</td>
+      <td class="${dlc} num">${formatDate(item.deadline)}</td>
+      <td>${prioBadge(item.prio)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleDetail(key, id) {
+  document.getElementById(`detail-${key}-${id}`)?.classList.toggle('open');
+}
+
+// =====================================================
+// LINKED ITEMS RENDER
+// =====================================================
+function renderLinkedItems(item) {
+  const risicos = getLinkedRisicos(item);
+  const afh     = getLinkedAfh(item);
+  const bes     = getLinkedBesluiten(item);
+  if (!risicos.length && !afh.length && !bes.length) return '';
+
+  let html = '<div class="linked-block">';
+
+  if (risicos.length) {
+    html += `<div class="linked-block-title">Gekoppelde risico's</div><div class="linked-cards">`;
+    risicos.forEach(r => {
+      html += `<div class="linked-card type-risico">
+        <span class="lc-nr">R${r.nr}</span>
+        <span class="lc-desc">${esc(r.beschrijving)}</span>
+        <span class="lc-meta">${kansBadge(r.bruto_kans)} bruto &rarr; ${kansBadge(r.netto_kans)} netto &nbsp;&bull;&nbsp; Mitigatie: ${esc(r.mitigatie)}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (afh.length) {
+    html += `<div class="linked-block-title" style="margin-top:8px">Gekoppelde afhankelijkheden</div><div class="linked-cards">`;
+    afh.forEach(a => {
+      html += `<div class="linked-card type-afh">
+        <span class="lc-nr">A${a.nr}</span>
+        <span class="lc-desc">${esc(a.beschrijving)}</span>
+        <span class="lc-meta">Eigenaar: ${esc(a.eigenaar)} &bull; Status: ${esc(a.status)}${a.opmerking?' &bull; '+esc(a.opmerking):''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (bes.length) {
+    html += `<div class="linked-block-title" style="margin-top:8px">Gekoppelde besluiten</div><div class="linked-cards">`;
+    bes.forEach(b => {
+      html += `<div class="linked-card type-besluit">
+        <span class="lc-nr">B${b.nr}</span>
+        <span class="lc-desc">${esc(b.beschrijving)}</span>
+        <span class="lc-meta">Eigenaar: ${esc(b.eigenaar)} &bull; ${esc(b.forum)}${b.datum?' &bull; '+b.datum:''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// =====================================================
+// RISICO'S TAB
+// =====================================================
+function renderRisicos() {
+  const search = (document.getElementById('search-risico')?.value||'').toLowerCase();
+  const status = document.getElementById('status-risico')?.value||'';
+  const items  = state.risicos.filter(r => {
+    const ms = !search || [r.beschrijving, r.eigenaar, r.mitigatie].some(f=>(f||'').toLowerCase().includes(search));
+    const mst= !status || r.status===status;
+    return ms && mst;
+  });
+  const countEl = document.getElementById('count-risico');
+  if (countEl) countEl.innerHTML = `<strong>${items.length}</strong> van ${state.risicos.length} risico's`;
+  const tbody = document.getElementById('tbody-risico');
+  if (!items.length) { tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--grijs-mid)">Geen risico's gevonden.</td></tr>`; return; }
+  const badgeMap = { 'Loopt':'badge-loopt','Nieuw':'badge-nieuw','Afgerond':'badge-afgerond' };
+  tbody.innerHTML = items.map(r => `<tr>
+    <td class="num" style="font-weight:700">R${r.nr}</td>
+    <td style="max-width:230px;font-size:0.77rem;font-weight:500">${esc(r.beschrijving)}</td>
+    <td><span class="tag-user">${esc(r.eigenaar)}</span></td>
+    <td>${kansBadge(r.bruto_kans)}</td>
+    <td>${kansBadge(r.bruto_impact)}</td>
+    <td>${kansBadge(r.netto_kans)}</td>
+    <td>${kansBadge(r.netto_impact)}</td>
+    <td style="font-size:0.73rem;color:#555;max-width:180px">${esc(r.mitigatie)}</td>
+    <td><span class="badge ${badgeMap[r.status]||'badge-nieuw'}">${esc(r.status)}</span></td>
+    <td class="num" style="font-size:0.73rem">${r.deadline||'-'}</td>
+    <td onclick="event.stopPropagation()" style="white-space:nowrap">
+      <button class="btn btn-secondary btn-sm btn-icon" onclick="openModalRisico('${r.id}')" title="Bewerken">&#9998;</button>
+      <button class="btn btn-danger btn-sm btn-icon" onclick="deleteRisico('${r.id}')" title="Verwijderen">&#128465;</button>
+    </td>
+  </tr>`).join('');
+}
+
+// =====================================================
+// AFHANKELIJKHEDEN & BESLUITEN TAB
+// =====================================================
+function renderAfhBesluit() {
+  const badgeMap = { 'Loopt':'badge-loopt','Nieuw':'badge-nieuw','Afgerond':'badge-afgerond' };
+
+  // Afhankelijkheden
+  const tbodyAfh = document.getElementById('tbody-afh');
+  if (tbodyAfh) {
+    if (!state.afhankelijkheden.length) {
+      tbodyAfh.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--grijs-mid)">Nog geen afhankelijkheden vastgelegd.</td></tr>`;
+    } else {
+      tbodyAfh.innerHTML = state.afhankelijkheden.map(a => `<tr>
+        <td class="num" style="font-weight:700">A${a.nr}</td>
+        <td style="font-weight:500;font-size:0.77rem;max-width:220px">${esc(a.beschrijving)}</td>
+        <td><span class="tag-user">${esc(a.eigenaar)}</span></td>
+        <td style="font-size:0.73rem;color:#888">${esc(a.type)||'-'}</td>
+        <td class="num">${a.leverdatum||'-'}</td>
+        <td><span class="badge ${badgeMap[a.status]||'badge-nieuw'}">${esc(a.status)}</span></td>
+        <td style="font-size:0.73rem;color:#555;max-width:200px">${esc(a.toelichting)||'-'}</td>
+        <td onclick="event.stopPropagation()" style="white-space:nowrap">
+          <button class="btn btn-secondary btn-sm btn-icon" onclick="openModalAfh('${a.id}')" title="Bewerken">&#9998;</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteAfh('${a.id}')" title="Verwijderen">&#128465;</button>
+        </td>
+      </tr>`).join('');
+    }
+  }
+
+  // Besluiten
+  const tbodyBes = document.getElementById('tbody-besluit');
+  if (tbodyBes) {
+    const geldig = state.besluiten.filter(b=>b.beschrijving);
+    if (!geldig.length) {
+      tbodyBes.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--grijs-mid)">Nog geen besluiten vastgelegd.</td></tr>`;
+    } else {
+      tbodyBes.innerHTML = geldig.map(b => `<tr>
+        <td class="num" style="font-weight:700">B${b.nr}</td>
+        <td style="font-weight:500;font-size:0.77rem">${esc(b.beschrijving)}</td>
+        <td><span class="tag-user">${esc(b.eigenaar)}</span></td>
+        <td style="font-size:0.74rem;color:#888">${esc(b.forum)}</td>
+        <td class="num">${b.datum||'-'}</td>
+        <td onclick="event.stopPropagation()" style="white-space:nowrap">
+          <button class="btn btn-secondary btn-sm btn-icon" onclick="openModalBesluit('${b.id}')" title="Bewerken">&#9998;</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteBesluit('${b.id}')" title="Verwijderen">&#128465;</button>
+        </td>
+      </tr>`).join('');
+    }
+  }
+}
+
+function sortTable(key, col) {
+  const s = sortState[key];
+  s.dir = (s.col === col) ? s.dir * -1 : 1;
+  s.col = col;
+  state[key].sort((a,b) => {
+    const va=a[col]||'', vb=b[col]||'';
+    return va<vb ? -s.dir : va>vb ? s.dir : 0;
+  });
+  renderTable(key);
+}
+
+// =====================================================
+// GANTT
+// =====================================================
+function setGanttPeriod(period) {
+  const now = new Date(); now.setHours(0,0,0,0);
+  let from, to;
+  if (period === 'month') {
+    from = new Date(now.getFullYear(), now.getMonth(), 1);
+    to   = new Date(now.getFullYear(), now.getMonth()+1, 0);
+  } else if (period === 'quarter') {
+    from = new Date(now);
+    to   = new Date(now.getFullYear(), now.getMonth()+3, 0);
+  } else {
+    from = null; to = null;
+  }
+  document.getElementById('gantt-from').value = from ? from.toISOString().slice(0,10) : '';
+  document.getElementById('gantt-to').value   = to   ? to.toISOString().slice(0,10)   : '';
+  renderGantt();
+}
+
+let _ganttSortByDate = false;
+
+function toggleGanttSort() {
+  _ganttSortByDate = !_ganttSortByDate;
+  const btn = document.getElementById('gantt-sort-btn');
+  if (btn) {
+    btn.textContent = _ganttSortByDate ? 'Originele volgorde' : 'Sorteren op datum';
+    btn.style.background = _ganttSortByDate ? 'var(--groen-donker)' : '';
+    btn.style.color = _ganttSortByDate ? 'white' : '';
+    btn.style.borderColor = _ganttSortByDate ? 'var(--groen-donker)' : '';
+  }
+  renderGantt();
+}
+
+function renderGantt() {
+  const projectFilter = document.getElementById('gantt-project').value;
+  const statusFilter  = document.getElementById('gantt-status').value;
+  const showMilestones= document.getElementById('gantt-milestones').checked;
+  const fromVal = document.getElementById('gantt-from').value;
+  const toVal   = document.getElementById('gantt-to').value;
+
+  // Collect items
+  let allItems = [];
+  const keys = projectFilter === 'all' ? ['a','b','c'] : [projectFilter];
+  const labels = { a:'A', b:'B', c:'C' };
+  keys.forEach(k => {
+    state[k].forEach(item => {
+      allItems.push({...item, _k: k});
+    });
+  });
+
+  // Filter by status
+  if (statusFilter === 'open') allItems = allItems.filter(i => i.status === 'Nieuw' || i.status === 'Loopt');
+  else if (statusFilter !== 'all') allItems = allItems.filter(i => i.status === statusFilter);
+
+  // Filter milestones
+  if (!showMilestones) allItems = allItems.filter(i => !(i.type||'').toLowerCase().includes('milestone'));
+
+  // Only items with at least a deadline or start
+  allItems = allItems.filter(i => i.start || i.deadline);
+
+  // Determine date range
+  let allDates = allItems.flatMap(i => [i.start, i.deadline].filter(Boolean)).map(d => new Date(d));
+  if (!allDates.length) {
+    document.getElementById('gantt-container').innerHTML = '<div class="gantt-empty">Geen acties met datums gevonden voor de geselecteerde filters.</div>';
+    return;
+  }
+
+  let rangeStart = fromVal ? new Date(fromVal) : new Date(Math.min(...allDates));
+  let rangeEnd   = toVal   ? new Date(toVal)   : new Date(Math.max(...allDates));
+  rangeStart.setDate(1); // begin van de maand
+  rangeEnd = new Date(rangeEnd.getFullYear(), rangeEnd.getMonth()+1, 0); // einde van de maand
+
+  // Filter items to those overlapping with date range
+  allItems = allItems.filter(i => {
+    const s = i.start    ? new Date(i.start)    : new Date(i.deadline);
+    const e = i.deadline ? new Date(i.deadline) : new Date(i.start);
+    return e >= rangeStart && s <= rangeEnd;
+  });
+
+  if (!allItems.length) {
+    document.getElementById('gantt-container').innerHTML = '<div class="gantt-empty">Geen acties gevonden in de geselecteerde periode.</div>';
+    return;
+  }
+
+  // Optioneel sorteren op startdatum (dan deadline als fallback)
+  if (_ganttSortByDate) {
+    allItems.sort((a, b) => {
+      const da = new Date(a.start || a.deadline);
+      const db = new Date(b.start || b.deadline);
+      return da - db;
+    });
+  }
+
+  // Build months array
+  const months = [];
+  let cur = new Date(rangeStart);
+  while (cur <= rangeEnd) {
+    months.push(new Date(cur));
+    cur.setMonth(cur.getMonth()+1);
+  }
+
+  const totalMs  = rangeEnd - rangeStart;
+  const NL_MONTHS = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+
+  function pct(date) {
+    if (!date) return null;
+    const d = new Date(date); d.setHours(0,0,0,0);
+    const raw = (d - rangeStart) / totalMs * 100;
+    return Math.max(0, Math.min(100, raw));
+  }
+
+  const todayPct = pct(TODAY);
+
+  function barColorClass(item) {
+    if (item.status === 'Afgerond') return 'bar-afgerond';
+    if ((item.type||'').toLowerCase().includes('milestone')) return 'bar-milestone';
+    const ds = deadlineStatus(item);
+    if (ds === 'verlopen') return 'bar-verlopen';
+    if (ds === 'komend')   return 'bar-komend';
+    // Week van de Palliatieve Zorg subgroep binnen Project C
+    if ((item.subgroep||'') === 'weekpz') return 'bar-weekpz';
+    if (item.status === 'Loopt') return 'bar-loopt';
+    return 'bar-nieuw';
+  }
+
+  // Build HTML
+  let html = '';
+
+  // Header
+  html += `<div class="gantt-header-row">
+    <div class="gantt-label-col">Actie <span style="font-size:0.6rem;opacity:0.6;font-weight:400;margin-left:6px">klik om te openen</span></div>
+    <div class="gantt-months">`;
+  months.forEach(m => {
+    const isToday = m.getFullYear()===TODAY.getFullYear() && m.getMonth()===TODAY.getMonth();
+    html += `<div class="gantt-month${isToday?' today-month':''}">${NL_MONTHS[m.getMonth()]} '${String(m.getFullYear()).slice(2)}</div>`;
+  });
+  html += `</div></div>`;
+
+  // Rows
+  allItems.forEach(item => {
+    const isMilestone = (item.type||'').toLowerCase().includes('milestone');
+    const startD = item.start    ? new Date(item.start)    : new Date(item.deadline);
+    const endD   = item.deadline ? new Date(item.deadline) : new Date(item.start);
+    const leftPct  = pct(startD);
+    const rightPct = pct(endD);
+    const widthPct = Math.max(0.5, rightPct - leftPct);
+    const barClass = barColorClass(item);
+    const dlc = deadlineClass(item);
+    const projectLabel = labels[item._k] || '';
+
+    html += `<div class="gantt-row${isMilestone?' milestone-row':''}" onclick="navigateToAction('${item._k}','${item.id}')">
+      <div class="gantt-row-label" title="${esc(item.beschrijving||item.naam)}">
+        <span class="nr">${projectLabel}${esc(item.nr)}</span>
+        <span class="lbl">${esc(item.naam)}</span>
+        <span class="owner">${esc(item.eigenaar||'')}</span>
+      </div>
+      <div class="gantt-timeline">`;
+
+    // Month dividers
+    months.forEach((m,i) => {
+      const mPct = ((new Date(m) - rangeStart) / totalMs) * 100;
+      const isToday = m.getFullYear()===TODAY.getFullYear() && m.getMonth()===TODAY.getMonth();
+      html += `<div class="gantt-month-bg${isToday?' today-col':''}" style="left:${mPct.toFixed(2)}%;width:${(100/months.length).toFixed(2)}%"></div>`;
+    });
+
+    // Today line
+    if (todayPct !== null && todayPct >= 0 && todayPct <= 100) {
+      html += `<div class="today-line" style="left:${todayPct.toFixed(2)}%"></div>`;
+    }
+
+    // Bar
+    html += `<div class="gantt-bar-wrap" style="left:${leftPct.toFixed(2)}%;width:${widthPct.toFixed(2)}%;top:50%;transform:translateY(-50%)">
+      <div class="gantt-bar ${barClass}" title="${esc(item.naam)} | ${formatDate(item.start)} - ${formatDate(item.deadline)}">
+        ${widthPct > 3 ? esc(item.naam) : ''}
+      </div>
+    </div>`;
+
+    html += `</div></div>`;
+  });
+
+  document.getElementById('gantt-container').innerHTML = html;
+}
+
+// =====================================================
+// MODAL
+// =====================================================
+let _modalProject = null, _editId = null;
+
+function openModal(key) {
+  _modalProject = key; _editId = null;
+  document.getElementById('modal-title').textContent = 'Nieuwe actie toevoegen';
+  clearForm();
+  updateLinkHints();
+  document.getElementById('f-type').value = key==='a'?'Project A':key==='b'?'Project B':'Project C';
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function editItem(key, id) {
+  const item = state[key].find(i=>i.id===id); if (!item) return;
+  _modalProject = key; _editId = id;
+  document.getElementById('modal-title').textContent = 'Actie bewerken';
+  fillForm(item);
+  updateLinkHints();
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function fillForm(item) {
+  ['nr','naam','eigenaar','start','deadline','beschrijving','opmerking','risico'].forEach(f => {
+    document.getElementById('f-'+f).value = item[f]||'';
+  });
+  document.getElementById('f-afh-nr').value    = item.afh_nr||'';
+  document.getElementById('f-besluit-nr').value = item.besluit_nr||'';
+  document.getElementById('f-prio').value   = item.prio||'';
+  document.getElementById('f-status').value = item.status||'Nieuw';
+  document.getElementById('f-type').value   = item.type||'';
+  document.getElementById('f-gevaar').value = item.gevaar||'Nee';
+}
+
+function clearForm() {
+  ['nr','naam','eigenaar','start','deadline','beschrijving','opmerking','risico'].forEach(f => document.getElementById('f-'+f).value='');
+  document.getElementById('f-afh-nr').value='';
+  document.getElementById('f-besluit-nr').value='';
+  document.getElementById('f-prio').value=''; document.getElementById('f-status').value='Nieuw';
+  document.getElementById('f-gevaar').value='Nee';
+  updateLinkHints();
+}
+
+function updateLinkHints() {
+  const rNrs = parseNrs(document.getElementById('f-risico')?.value||'');
+  const aNrs = parseNrs(document.getElementById('f-afh-nr')?.value||'');
+  const bNrs = parseNrs(document.getElementById('f-besluit-nr')?.value||'');
+  const rHint = document.getElementById('f-risico-hint');
+  const aHint = document.getElementById('f-afh-hint');
+  const bHint = document.getElementById('f-besluit-hint');
+  if (rHint) {
+    const matched = state.risicos.filter(r=>rNrs.includes(r.nr)).map(r=>`R${r.nr}`);
+    const invalid = rNrs.filter(n=>!state.risicos.find(r=>r.nr===n));
+    rHint.textContent = matched.length ? matched.join(', ') + (invalid.length ? ` | ?:${invalid.join(',')}` : '') : (rNrs.length ? `Niet gevonden: ${rNrs.join(',')}` : '');
+  }
+  if (aHint) {
+    const matched = state.afhankelijkheden.filter(a=>aNrs.includes(a.nr)).map(a=>`A${a.nr}`);
+    const invalid = aNrs.filter(n=>!state.afhankelijkheden.find(a=>a.nr===n));
+    aHint.textContent = matched.length ? matched.join(', ') + (invalid.length ? ` | ?:${invalid.join(',')}` : '') : (aNrs.length ? `Niet gevonden: ${aNrs.join(',')}` : '');
+  }
+  if (bHint) {
+    const matched = state.besluiten.filter(b=>bNrs.includes(b.nr)).map(b=>`B${b.nr}`);
+    const invalid = bNrs.filter(n=>!state.besluiten.find(b=>b.nr===n));
+    bHint.textContent = matched.length ? matched.join(', ') + (invalid.length ? ` | ?:${invalid.join(',')}` : '') : (bNrs.length ? `Niet gevonden: ${bNrs.join(',')}` : '');
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+  _modalProject=null; _editId=null;
+}
+
+function saveItem() {
+  const key = _modalProject;
+  const item = {
+    id: _editId || uid(),
+    nr: document.getElementById('f-nr').value.trim(),
+    prio: document.getElementById('f-prio').value,
+    naam: document.getElementById('f-naam').value.trim(),
+    eigenaar: document.getElementById('f-eigenaar').value.trim(),
+    status: document.getElementById('f-status').value,
+    start: document.getElementById('f-start').value,
+    deadline: document.getElementById('f-deadline').value,
+    type: document.getElementById('f-type').value,
+    beschrijving: document.getElementById('f-beschrijving').value.trim(),
+    opmerking: document.getElementById('f-opmerking').value.trim(),
+    gevaar: document.getElementById('f-gevaar').value,
+    risico: document.getElementById('f-risico').value.trim(),
+    afh_nr: document.getElementById('f-afh-nr').value.trim(),
+    besluit_nr: document.getElementById('f-besluit-nr').value.trim(),
+    vragen: '',
+  };
+  if (!item.naam) { alert('Vul minimaal een naam in.'); return; }
+  if (_editId) { const idx = state[key].findIndex(i=>i.id===_editId); if (idx!==-1) state[key][idx]=item; }
+  else state[key].push(item);
+  saveState(); closeModal(); renderAll();
+}
+
+function deleteItem(key, id) {
+  if (!confirm('Weet je zeker dat je deze actie wilt verwijderen?')) return;
+  state[key] = state[key].filter(i=>i.id!==id);
+  saveState(); renderAll();
+}
+
+// =====================================================
+// RISICO CRUD
+// =====================================================
+let _editRisicoId = null;
+
+function openModalRisico(id) {
+  _editRisicoId = id || null;
+  const r = id ? state.risicos.find(x=>x.id===id) : null;
+  document.getElementById('mr-title').textContent = r ? 'Risico bewerken' : "Nieuw risico toevoegen";
+  const fields = ['beschrijving','eigenaar','bruto_kans','bruto_impact','mitigatie','netto_kans','netto_impact','deadline','status'];
+  fields.forEach(f => {
+    const el = document.getElementById('mr-'+f);
+    if (el) el.value = r ? (r[f]||'') : (f==='status'?'Nieuw':'');
+  });
+  document.getElementById('modal-risico').classList.add('open');
+}
+
+function saveRisico() {
+  const get = f => document.getElementById('mr-'+f)?.value?.trim()||'';
+  const item = {
+    id: _editRisicoId || uid(),
+    nr: _editRisicoId ? state.risicos.find(x=>x.id===_editRisicoId)?.nr : nextNr(state.risicos),
+    beschrijving: get('beschrijving'), eigenaar: get('eigenaar'),
+    bruto_kans: get('bruto_kans'), bruto_impact: get('bruto_impact'),
+    mitigatie: get('mitigatie'),
+    netto_kans: get('netto_kans'), netto_impact: get('netto_impact'),
+    deadline: get('deadline'), status: get('status'),
+  };
+  if (!item.beschrijving) { alert('Vul minimaal een beschrijving in.'); return; }
+  if (_editRisicoId) {
+    const idx = state.risicos.findIndex(x=>x.id===_editRisicoId);
+    if (idx!==-1) state.risicos[idx] = item;
+  } else {
+    state.risicos.push(item);
+  }
+  saveState();
+  document.getElementById('modal-risico').classList.remove('open');
+  _editRisicoId = null;
+  renderAll();
+}
+
+function deleteRisico(id) {
+  if (!confirm("Risico verwijderen?")) return;
+  state.risicos = state.risicos.filter(x=>x.id!==id);
+  saveState(); renderAll();
+}
+
+// =====================================================
+// AFHANKELIJKHEID CRUD
+// =====================================================
+let _editAfhId = null;
+
+function openModalAfh(id) {
+  _editAfhId = id || null;
+  const a = id ? state.afhankelijkheden.find(x=>x.id===id) : null;
+  document.getElementById('ma-title').textContent = a ? 'Afhankelijkheid bewerken' : 'Nieuwe afhankelijkheid toevoegen';
+  ['beschrijving','eigenaar','type','leverdatum','status','toelichting'].forEach(f => {
+    const el = document.getElementById('ma-'+f);
+    if (el) el.value = a ? (a[f]||'') : (f==='status'?'Nieuw':'');
+  });
+  document.getElementById('modal-afh').classList.add('open');
+}
+
+function saveAfh() {
+  const get = f => document.getElementById('ma-'+f)?.value?.trim()||'';
+  const item = {
+    id: _editAfhId || uid(),
+    nr: _editAfhId ? state.afhankelijkheden.find(x=>x.id===_editAfhId)?.nr : nextNr(state.afhankelijkheden),
+    beschrijving: get('beschrijving'), eigenaar: get('eigenaar'),
+    type: get('type'), leverdatum: get('leverdatum'),
+    status: get('status'), toelichting: get('toelichting'),
+  };
+  if (!item.beschrijving) { alert('Vul minimaal een beschrijving in.'); return; }
+  if (_editAfhId) {
+    const idx = state.afhankelijkheden.findIndex(x=>x.id===_editAfhId);
+    if (idx!==-1) state.afhankelijkheden[idx] = item;
+  } else {
+    state.afhankelijkheden.push(item);
+  }
+  saveState();
+  document.getElementById('modal-afh').classList.remove('open');
+  _editAfhId = null;
+  renderAll();
+}
+
+function deleteAfh(id) {
+  if (!confirm("Afhankelijkheid verwijderen?")) return;
+  state.afhankelijkheden = state.afhankelijkheden.filter(x=>x.id!==id);
+  saveState(); renderAll();
+}
+
+// =====================================================
+// BESLUIT CRUD
+// =====================================================
+let _editBesluitId = null;
+
+function openModalBesluit(id) {
+  _editBesluitId = id || null;
+  const b = id ? state.besluiten.find(x=>x.id===id) : null;
+  document.getElementById('mb-title').textContent = b ? 'Besluit bewerken' : 'Nieuw besluit toevoegen';
+  ['beschrijving','eigenaar','forum','datum','verwijzing'].forEach(f => {
+    const el = document.getElementById('mb-'+f);
+    if (el) el.value = b ? (b[f]||'') : '';
+  });
+  document.getElementById('modal-besluit').classList.add('open');
+}
+
+function saveBesluit() {
+  const get = f => document.getElementById('mb-'+f)?.value?.trim()||'';
+  const item = {
+    id: _editBesluitId || uid(),
+    nr: _editBesluitId ? state.besluiten.find(x=>x.id===_editBesluitId)?.nr : nextNr(state.besluiten),
+    beschrijving: get('beschrijving'), eigenaar: get('eigenaar'),
+    forum: get('forum'), datum: get('datum'), verwijzing: get('verwijzing'),
+  };
+  if (!item.beschrijving) { alert('Vul minimaal een beschrijving in.'); return; }
+  if (_editBesluitId) {
+    const idx = state.besluiten.findIndex(x=>x.id===_editBesluitId);
+    if (idx!==-1) state.besluiten[idx] = item;
+  } else {
+    state.besluiten.push(item);
+  }
+  saveState();
+  document.getElementById('modal-besluit').classList.remove('open');
+  _editBesluitId = null;
+  renderAll();
+}
+
+function deleteBesluit(id) {
+  if (!confirm("Besluit verwijderen?")) return;
+  state.besluiten = state.besluiten.filter(x=>x.id!==id);
+  saveState(); renderAll();
+}
+
+// =====================================================
+// TABS
+// =====================================================
+function switchTab(btn) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const name = btn.dataset.tab;
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if (name==='gantt') renderGantt();
+}
+
+function switchTabByName(name) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name)?.classList.add('active');
+  const btn = document.querySelector(`.tab-btn[data-tab="${name}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+function navigateToAction(key, id) {
+  // 1. Switch to the right project tab
+  const tabName = 'project-' + key;
+  switchTabByName(tabName);
+
+  // 2. Re-render the table so all rows are in the DOM (filters may have hidden the row)
+  // Clear any active search/status filters first so the item is visible
+  const searchEl = document.getElementById('search-' + key);
+  const statusEl = document.getElementById('status-' + key);
+  if (searchEl) searchEl.value = '';
+  if (statusEl) statusEl.value = '';
+  renderTable(key);
+
+  // 3. Scroll page to top so the tab header is visible, then find and highlight the row
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  setTimeout(() => {
+    // Open the detail row if not already open
+    const detailRow = document.getElementById(`detail-${key}-${id}`);
+    if (detailRow && !detailRow.classList.contains('open')) {
+      detailRow.classList.add('open');
+    }
+
+    // Find the main (clickable) row — it's the <tr> before the detail row
+    const mainRow = detailRow ? detailRow.previousElementSibling : null;
+    if (mainRow) {
+      mainRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      mainRow.classList.remove('nav-highlight');
+      void mainRow.offsetWidth; // reflow to restart animation
+      mainRow.classList.add('nav-highlight');
+      setTimeout(() => mainRow.classList.remove('nav-highlight'), 2200);
+    }
+  }, 120);
+}
+
+// =====================================================
+// EXPORT NAAR EXCEL (zelfde indeling als Acties_A/B/C)
+// =====================================================
+
+// Kolomkoppen exact zoals in de originele Excel tabbladen
+const EXCEL_COLS = [
+  'Prio', 'Nr', 'Naam (Korte beschrijving)', 'Eigenaar',
+  'Uitgebreide beschrijving', 'Vragen ter voorbereiding',
+  'Gerelateerd Nr afhankelijkheid', 'Gerelateerd Impediment Nr',
+  'Gerelateerd nr Risico', 'Start', 'Deadline',
+  'Deadline in gevaar?', 'Status', 'Opmerking bij status', 'Type'
+];
+
+function itemToExcelRow(item) {
+  return [
+    item.prio        || '',
+    item.nr          || '',
+    item.naam        || '',
+    item.eigenaar    || '',
+    item.beschrijving|| '',
+    item.vragen      || '',
+    '',                        // Gerelateerd Nr afhankelijkheid (niet in HTML bijgehouden)
+    '',                        // Gerelateerd Impediment Nr
+    item.risico      || '',
+    item.start       ? formatDate(item.start)    : '',
+    item.deadline    ? formatDate(item.deadline) : '',
+    item.gevaar      || 'Nee',
+    item.status      || 'Nieuw',
+    item.opmerking   || '',
+    item.type        || '',
+  ];
+}
+
+function exportToExcel() {
+  const wb = XLSX.utils.book_new();
+
+  const sheetDefs = [
+    { key: 'a', naam: 'Bewustwordingsstrategie hulp- zorgverleners', sheetName: 'Acties_A' },
+    { key: 'b', naam: 'Weet u wat u wilt bijeenkomsten',             sheetName: 'Acties_B' },
+    { key: 'c', naam: 'Bewustwording inwoners',                       sheetName: 'Acties_C' },
+  ];
+
+  sheetDefs.forEach(def => {
+    const rows = [];
+
+    // Rij 1: projectnaam header (zelfde als in originele Excel)
+    rows.push(['', '', '', '', `Actielog:`, def.naam]);
+    rows.push(['Actielog']);
+    rows.push(EXCEL_COLS);
+
+    // Data
+    state[def.key].forEach(item => {
+      rows.push(itemToExcelRow(item));
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+
+    // Kolombreedte (globaal)
+    ws['!cols'] = [
+      {wch:10},{wch:8},{wch:40},{wch:20},{wch:50},{wch:30},
+      {wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:16},{wch:10},{wch:30},{wch:12}
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, def.sheetName);
+  });
+
+  // Bestandsnaam met datum
+  const datum = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  XLSX.writeFile(wb, `TPZ_Acties_export_${datum}.xlsx`);
+}
+
+// =====================================================
+// BACKUP / RESTORE JSON
+// =====================================================
+function exportJSON() {
+  const datum = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `TPZ_backup_${datum}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed.a || !parsed.b || !parsed.c) {
+        alert('Ongeldig bestand. Zorg dat het een eerder geexporteerd TPZ backup-bestand is.');
+        return;
+      }
+      if (!confirm(`Weet je het zeker? De huidige data wordt vervangen door de data uit "${file.name}".`)) return;
+      state = parsed;
+      saveState();
+      renderAll();
+      alert('Data succesvol ingeladen.');
+    } catch(err) {
+      alert('Fout bij inladen: ' + err.message);
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// =====================================================
+// INIT
+// =====================================================
+// Default Gantt period: komend kwartaal
+function initGanttDates() {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const from = new Date(now.getFullYear(), now.getMonth(), 1);
+  const to   = new Date(now.getFullYear(), now.getMonth()+3, 0);
+  document.getElementById('gantt-from').value = from.toISOString().slice(0,10);
+  document.getElementById('gantt-to').value   = to.toISOString().slice(0,10);
+}
+
+document.getElementById('modal-backdrop').addEventListener('click', function(e) { if(e.target===this) closeModal(); });
+document.getElementById('modal-risico').addEventListener('click', function(e) { if(e.target===this) this.classList.remove('open'); });
+document.getElementById('modal-afh').addEventListener('click', function(e) { if(e.target===this) this.classList.remove('open'); });
+document.getElementById('modal-besluit').addEventListener('click', function(e) { if(e.target===this) this.classList.remove('open'); });
+
+// =====================================================
+// BULK SELECTIE
+// =====================================================
+let _selection = {}; // { 'key:id': true }
+
+function getSelectionCount() { return Object.keys(_selection).length; }
+
+function toggleRowSelect(key, id, cb, event) {
+  event.stopPropagation();
+  const k = key+':'+id;
+  if (cb.checked) _selection[k] = true; else delete _selection[k];
+  const tr = cb.closest('tr');
+  if (tr) tr.classList.toggle('selected-row', cb.checked);
+  updateBulkBar();
+}
+
+function toggleSelectAll(key, masterCb) {
+  const items = getFiltered(key);
+  const check = masterCb.checked;
+  items.forEach(item => {
+    const k = key+':'+item.id;
+    if (check) _selection[k] = true; else delete _selection[k];
+    const cb = document.getElementById('cb-'+key+'-'+item.id);
+    if (cb) { cb.checked = check; cb.closest('tr')?.classList.toggle('selected-row', check); }
+  });
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const count = getSelectionCount();
+  const bar = document.getElementById('bulk-bar');
+  const countEl = document.getElementById('bulk-count');
+  if (!bar) return;
+  if (count === 0) { bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+  countEl.textContent = count + ' geselecteerd';
+}
+
+function applyBulkStatus() {
+  const newStatus = document.getElementById('bulk-status-select').value;
+  if (!newStatus) { alert('Kies eerst een status.'); return; }
+  Object.keys(_selection).forEach(k => {
+    const [project, id] = k.split(':');
+    const item = state[project]?.find(i=>i.id===id);
+    if (item) item.status = newStatus;
+  });
+  saveState();
+  clearSelection();
+  renderAll();
+}
+
+function clearSelection() {
+  _selection = {};
+  document.querySelectorAll('.row-cb').forEach(cb => { cb.checked = false; cb.closest('tr')?.classList.remove('selected-row'); });
+  document.querySelectorAll('.master-cb').forEach(cb => cb.checked = false);
+  updateBulkBar();
+}
+
+// =====================================================
+// INIT
+// =====================================================
+
+
+  loadState();
+initGanttDates();
+renderAll();
+</script>
+
+<!-- BULK ACTIEBALK -->
+<div class="bulk-bar hidden" id="bulk-bar">
+  <span class="bulk-count" id="bulk-count">0 geselecteerd</span>
+  <span>Status wijzigen naar:</span>
+  <select id="bulk-status-select">
+    <option value="">Kies status...</option>
+    <option>Nieuw</option>
+    <option>Loopt</option>
+    <option>Afgerond</option>
+  </select>
+  <button class="btn-bulk-ok" onclick="applyBulkStatus()">Toepassen</button>
+  <button class="btn-bulk-cancel" onclick="clearSelection()">Annuleren</button>
+</div>
+
+</body>
+</html>
