@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPZ Midden-Nederland — Overzicht websites</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --groen-donker: #46571b;
+  --groen-licht: #93ab67;
+  --geel: #ebdc86;
+  --groen-mid: #6a8040;
+  --groen-pale: #d4dfc0;
+  --groen-xpale: #edf2e3;
+  --tekst: #2a3410;
+  --wit: #fdfef8;
+  --grijs-mid: #9aa085;
+  --shadow: rgba(70,87,27,0.15);
+  --oranje-pale: #fdf0e8;
+  --oranje: #b35c2c;
+  --oranje-border: #f0c9a8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color: var(--tekst); min-height: 100vh; padding: 0 0 80px; }
+
+.page-header { background: var(--groen-donker); color: var(--wit); padding: 48px 48px 40px; position: relative; overflow: hidden; }
+.page-header::after { content: ''; position: absolute; right: -80px; bottom: -80px; width: 320px; height: 320px; border-radius: 50%; background: var(--groen-licht); opacity: 0.18; }
+.page-header::before { content: ''; position: absolute; right: 80px; bottom: 20px; width: 160px; height: 160px; border-radius: 50%; background: var(--geel); opacity: 0.13; }
+.header-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--groen-licht); margin-bottom: 10px; }
+.page-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(22px, 3.5vw, 38px); line-height: 1.2; color: var(--wit); max-width: 680px; position: relative; }
+.header-sub { margin-top: 12px; font-size: 14px; color: var(--groen-pale); max-width: 620px; line-height: 1.6; position: relative; }
+
+.section-wrap { padding: 52px 48px 0; max-width: 1200px; margin: 0 auto; }
+.section-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--groen-donker); margin-bottom: 6px; }
+.section-desc { font-size: 13px; color: var(--grijs-mid); margin-bottom: 24px; }
+.section-block { margin-bottom: 48px; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.card { background: var(--wit); border: 1px solid var(--groen-pale); border-radius: 14px; padding: 24px; box-shadow: 0 4px 14px var(--shadow); display: flex; flex-direction: column; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--shadow); }
+.card h3 { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--groen-donker); margin-bottom: 8px; }
+.card p { font-size: 13px; color: var(--tekst); line-height: 1.5; flex-grow: 1; margin-bottom: 18px; }
+.card a.btn { align-self: flex-start; background: var(--groen-donker); color: var(--wit); text-decoration: none; font-size: 13px; font-weight: 500; padding: 9px 18px; border-radius: 8px; transition: background 0.15s ease; }
+.card a.btn:hover { background: var(--groen-mid); }
+
+.badge-ta { display: inline-block; background: var(--groen-pale); color: var(--groen-donker); font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+.badge-pmt { display: inline-block; background: var(--oranje-pale); color: var(--oranje); border: 1px solid var(--oranje-border); font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+.badge-overig { display: inline-block; background: var(--groen-xpale); color: var(--grijs-mid); border: 1px solid var(--groen-pale); font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-label">TPZ Midden-Nederland</div>
+  <h1>Overzicht van websites &amp; pagina's</h1>
+  <p class="header-sub">Verzamelde links naar alle live sites — ingedeeld per doelgroep, zodat je in één oogopslag ziet welke pagina voor wie bedoeld is.</p>
+</header>
+
+<div class="section-wrap">
+
+  <div class="section-block">
+    <div class="section-title">Voor de transformatieaanjagers</div>
+    <div class="section-desc">Handreikingen en gespreksmateriaal voor gebruik door TA's in het veld.</div>
+    <div class="card-grid">
+      <div class="card">
+        <span class="badge-ta">TA's</span>
+        <h3>BBH</h3>
+        <p>Bewust bekwaam in de palliatieve zorg — handreiking voor transformatieaanjagers.</p>
+        <a class="btn" href="https://anneloesb.github.io/BBH/" target="_blank" rel="noopener">Open site →</a>
+      </div>
+      <div class="card">
+        <span class="badge-ta">TA's</span>
+        <h3>Verhaallijn</h3>
+        <p>Palliatieve zorg: jouw rol als huisarts — verhaal- en gespreksmateriaal richting huisartsen.</p>
+        <a class="btn" href="https://anneloesb.github.io/Verhaallijn/" target="_blank" rel="noopener">Open site →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-title">Intern voor het PMT</div>
+    <div class="section-desc">Overzichten en monitoring ten behoeve van coördinatie en management.</div>
+    <div class="card-grid">
+      <div class="card">
+        <span class="badge-pmt">PMT</span>
+        <h3>Weet u wat u wilt — Bijeenkomsten</h3>
+        <p>Regionaal overzicht en kaart van alle "Weet u wat u wilt"-bijeenkomsten in Midden-Nederland.</p>
+        <a class="btn" href="https://anneloesb.github.io/Wuwuw_bijeenkomsten/" target="_blank" rel="noopener">Open site →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-title">Overig</div>
+    <div class="section-desc">Niet direct TPZ-gerelateerd.</div>
+    <div class="card-grid">
+      <div class="card">
+        <span class="badge-overig">Persoonlijk</span>
+        <h3>Vakantieplanning</h3>
+        <p>Persoonlijke vakantie Gantt-planning 2026.</p>
+        <a class="btn" href="https://anneloesb.github.io/Vakantieplanning/" target="_blank" rel="noopener">Open site →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
