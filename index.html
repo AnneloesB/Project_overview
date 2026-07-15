@@ -76,6 +76,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
 .chip.active { background: var(--groen-donker); color: var(--wit); border-color: var(--groen-donker); }
 .search-input { font-family: 'DM Sans', sans-serif; font-size: 12.5px; padding: 7px 12px; border: 1px solid var(--groen-pale); border-radius: 8px; color: var(--tekst); width: 100%; }
 .search-input:focus { outline: none; border-color: var(--groen-mid); }
+.reset-btn { font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 500; color: var(--groen-mid); background: transparent; border: 1px solid var(--groen-pale); border-radius: 8px; padding: 7px 12px; cursor: pointer; transition: background 0.15s ease, color 0.15s ease; align-self: flex-start; }
+.reset-btn:hover { background: var(--groen-xpale); color: var(--groen-donker); }
 
 .tpz-section-title { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--groen-donker); margin: 22px 0 10px; }
 
@@ -223,6 +225,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
         <span class="filter-label">Zoeken</span>
         <input type="text" id="search-input" class="search-input" placeholder="Bv. Buurtzorg, UNICUM, Careyn…">
       </div>
+      <button type="button" id="reset-filters" class="reset-btn">Filters resetten</button>
     </div>
     <div class="region-grid" id="region-grid"></div>
   </div>
@@ -326,8 +329,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
     typeChipsEl.appendChild(chip);
   });
 
-  document.getElementById('search-input').addEventListener('input', e => {
+  const searchInputEl = document.getElementById('search-input');
+  searchInputEl.addEventListener('input', e => {
     state.search = e.target.value.trim();
+    render();
+  });
+
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    state.regions.clear();
+    state.types.clear();
+    state.search = '';
+    searchInputEl.value = '';
     render();
   });
 
