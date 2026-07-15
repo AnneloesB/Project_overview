@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TPZ Midden-Nederland — Overzicht websites</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
 
@@ -21,6 +23,7 @@
   --oranje-pale: #fdf0e8;
   --oranje: #b35c2c;
   --oranje-border: #f0c9a8;
+  --blauw: #3d6b7d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,8 +52,75 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
 .badge-pmt { display: inline-block; background: var(--oranje-pale); color: var(--oranje); border: 1px solid var(--oranje-border); font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; }
 .badge-overig { display: inline-block; background: var(--groen-xpale); color: var(--grijs-mid); border: 1px solid var(--groen-pale); font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; }
 
+/* Tabs */
+.tabs { display: flex; gap: 4px; padding: 0 32px; background: var(--groen-donker); position: relative; }
+.tab-btn { background: transparent; border: none; color: var(--groen-pale); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 16px; cursor: pointer; border-radius: 8px 8px 0 0; transition: background 0.15s ease, color 0.15s ease; }
+.tab-btn:hover { background: rgba(255,255,255,0.08); color: var(--wit); }
+.tab-btn.active { background: var(--groen-xpale); color: var(--groen-donker); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* TPZ overzicht tab */
+.tpz-wrap { flex: 1 1 auto; padding: 20px 32px; max-width: 1300px; margin: 0 auto; width: 100%; }
+.tpz-intro { margin-bottom: 16px; }
+.tpz-intro .section-desc { margin-bottom: 0; }
+
+.map-row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
+
+.filters { display: flex; flex-direction: column; flex: 0 0 230px; gap: 18px; background: var(--wit); border: 1px solid var(--groen-pale); border-radius: 12px; padding: 16px 18px; box-shadow: 0 3px 10px var(--shadow); }
+.filter-group { display: flex; flex-direction: column; gap: 6px; }
+.filter-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--grijs-mid); }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: var(--groen-xpale); border: 1px solid var(--groen-pale); color: var(--groen-donker); font-size: 11.5px; font-weight: 500; padding: 5px 12px; border-radius: 20px; cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
+.chip:hover { background: var(--groen-pale); }
+.chip.active { background: var(--groen-donker); color: var(--wit); border-color: var(--groen-donker); }
+.search-input { font-family: 'DM Sans', sans-serif; font-size: 12.5px; padding: 7px 12px; border: 1px solid var(--groen-pale); border-radius: 8px; color: var(--tekst); width: 100%; }
+.search-input:focus { outline: none; border-color: var(--groen-mid); }
+
+.tpz-section-title { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--groen-donker); margin: 22px 0 10px; }
+
+.map-card { background: var(--wit); border: 1px solid var(--groen-pale); border-radius: 12px; padding: 14px; box-shadow: 0 3px 10px var(--shadow); max-width: 720px; margin: 0 auto; }
+#tpz-map { height: 560px; border-radius: 8px; z-index: 0; }
+@media (max-width: 760px) {
+  .map-row { flex-direction: column; }
+  .filters { flex: 1 1 auto; width: 100%; }
+  #tpz-map { height: 440px; }
+}
+.map-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; }
+.map-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--tekst); }
+.map-legend-dot { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 auto; }
+.map-credit { font-size: 10px; color: var(--grijs-mid); margin-top: 8px; }
+.leaflet-tooltip.gemeente-tooltip { font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--groen-pale); box-shadow: 0 3px 10px var(--shadow); }
+.leaflet-tooltip.gemeente-tooltip .tt-regio { color: var(--grijs-mid); font-size: 10.5px; }
+
+.region-grid { flex: 1 1 auto; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.region-card { background: var(--wit); border: 1px solid var(--groen-pale); border-radius: 12px; padding: 14px 16px; box-shadow: 0 3px 10px var(--shadow); transition: opacity 0.15s ease; }
+.region-card.hidden { display: none; }
+.region-card h3 { font-family: 'DM Serif Display', serif; font-size: 15px; color: var(--groen-donker); margin-bottom: 10px; }
+.field { margin-bottom: 8px; }
+.field.hidden { display: none; }
+.field-label { font-size: 9.5px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--grijs-mid); margin-bottom: 2px; }
+.field-value { font-size: 12px; color: var(--tekst); line-height: 1.4; }
+.field-value mark, .tpz-table mark { background: var(--geel); color: var(--tekst); border-radius: 3px; padding: 0 2px; }
+.dim { opacity: 0.35; }
+
+.tpz-table-wrap { overflow-x: auto; background: var(--wit); border: 1px solid var(--groen-pale); border-radius: 12px; box-shadow: 0 3px 10px var(--shadow); }
+.tpz-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tpz-table th, .tpz-table td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--groen-pale); vertical-align: top; }
+.tpz-table th { background: var(--groen-xpale); color: var(--groen-donker); font-weight: 600; font-size: 11px; letter-spacing: 0.3px; text-transform: uppercase; white-space: nowrap; }
+.tpz-table td.row-label { font-weight: 600; color: var(--groen-donker); white-space: nowrap; }
+.tpz-table td.col-hidden, .tpz-table th.col-hidden { display: none; }
+.tpz-table tr.row-hidden { display: none; }
+
+.samenwerking-strip { background: var(--oranje-pale); border: 1px solid var(--oranje-border); border-radius: 12px; padding: 14px 18px; margin-top: 18px; }
+.samenwerking-strip .field-label { color: var(--oranje); }
+.samenwerking-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.samenwerking-list span { background: var(--wit); border: 1px solid var(--oranje-border); color: var(--oranje); font-size: 11.5px; font-weight: 500; padding: 4px 12px; border-radius: 20px; }
+
 @media (max-width: 800px) {
   .columns { flex-direction: column; overflow: auto; }
+  .tabs { padding: 0 16px; overflow-x: auto; }
+  .tpz-wrap { padding: 16px; }
 }
 </style>
 </head>
@@ -58,10 +128,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
 
 <header class="page-header">
   <div class="header-label">TPZ Midden-Nederland</div>
-  <h1>Overzicht van websites &amp; pagina's</h1>
-  <p class="header-sub">Verzamelde links naar alle live sites — ingedeeld per doelgroep.</p>
+  <h1 id="page-title">Overzicht van websites &amp; pagina's</h1>
+  <p class="header-sub" id="page-sub">Verzamelde links naar alle live sites — ingedeeld per doelgroep.</p>
 </header>
 
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="tab-websites">Websites &amp; pagina's</button>
+  <button class="tab-btn" data-tab="tab-tpz">TPZ overzicht</button>
+</nav>
+
+<section id="tab-websites" class="tab-panel active">
 <div class="columns">
 
   <div class="column">
@@ -103,6 +179,311 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
   </div>
 
 </div>
+</section>
+
+<section id="tab-tpz" class="tab-panel">
+<div class="tpz-wrap">
+
+  <div class="tpz-intro">
+    <div class="section-title">TPZ overzicht per regio</div>
+    <p class="section-desc">Zorgorganisaties binnen de vijf WMO-gebieden van TPZ Midden-Nederland — gemeentes, ziekenhuislocaties, huisartsenorganisaties, wijkverpleging, netwerk PZ en hospicebedden. Filter op regio of type, of zoek op organisatienaam.</p>
+  </div>
+
+  <div class="tpz-section-title">Visueel overzicht</div>
+  <div class="map-row">
+    <div class="filters">
+      <div class="filter-group">
+        <span class="filter-label">Regio</span>
+        <div class="chip-row" id="region-chips"></div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Type</span>
+        <div class="chip-row" id="type-chips"></div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Zoeken</span>
+        <input type="text" id="search-input" class="search-input" placeholder="Bv. Buurtzorg, UNICUM, Careyn…">
+      </div>
+    </div>
+    <div class="region-grid" id="region-grid"></div>
+  </div>
+
+  <div class="tpz-section-title">Kaart</div>
+  <div class="map-card">
+    <div id="tpz-map"></div>
+    <div class="map-legend" id="map-legend"></div>
+    <div class="map-credit">Gemeentegrenzen: cartomap.github.io (CBS/Kadaster) · Kaart: OpenStreetMap &amp; CARTO</div>
+  </div>
+
+  <div class="samenwerking-strip">
+    <span class="field-label">Samenwerkingsverbanden (alle regio's)</span>
+    <div class="samenwerking-list" id="samenwerking-list"></div>
+  </div>
+
+  <div class="tpz-section-title">Tabel</div>
+  <div class="tpz-table-wrap">
+    <table class="tpz-table" id="tpz-table">
+      <thead><tr id="tpz-table-head"></tr></thead>
+      <tbody id="tpz-table-body"></tbody>
+    </table>
+  </div>
+
+</div>
+</section>
+
+<script>
+(function () {
+  const regios = [
+    { id: 'uw', naam: 'Utrecht-West', gemeentes: ['De Ronde Venen', 'Montfoort', 'Oudewater', 'Stichtse Vecht', 'Woerden'], ziekenhuizen: ['St. Antonius Utrecht'], huisartsen: ['RegiozorgNU'], wijkverpleging: ['Careyn (20)', 'Buurtzorg (2)', 'De Rijnhoven (2)'], netwerkPZ: 'Noordwest Utrecht', hospicebedden: '31 (+2)' },
+    { id: 'u', naam: 'Utrecht', gemeentes: ['Utrecht'], ziekenhuizen: ['UMC Utrecht', 'Diakonessenhuis', 'St. Antonius Utrecht'], huisartsen: ['HA Utrecht Stad', 'RegioZorgNU'], wijkverpleging: ['Careyn (16)', 'Axioncontinu (7)', 'Buurtzorg (6)'], netwerkPZ: 'Utrecht Stad', hospicebedden: '6 (+6)' },
+    { id: 'zo', naam: 'Utrecht Zuid Oost', gemeentes: ['Bunnik', 'De Bilt', 'Utrechtse Heuvelrug', 'Wijk bij Duurstede', 'Zeist'], ziekenhuizen: [], huisartsen: ['UNICUM'], wijkverpleging: ['Santé Partners (6)', 'Buurtzorg (5)', 'Silverein (3)'], netwerkPZ: 'ZO Utrecht', hospicebedden: '31 (+3)' },
+    { id: 'lek', naam: 'Lekstroom', gemeentes: ['Houten', 'IJsselstein', 'Lopik', 'Nieuwegein', 'Vianen'], ziekenhuizen: ['St. Antonius Nieuwegein'], huisartsen: ['UNICUM'], wijkverpleging: ['Santé Partners (10)', 'Buurtzorg (5)', 'Zorgspectrum (4)'], netwerkPZ: 'Utrecht Zuid', hospicebedden: '15 (+6)' },
+    { id: 'eem', naam: 'Eemland', gemeentes: ['Amersfoort', 'Baarn', 'Bunschoten', 'Leusden', 'Nijkerk', 'Soest', 'Woudenberg'], ziekenhuizen: ['Meander Amersfoort'], huisartsen: ['HA Eemland'], wijkverpleging: ['Beweging 3.0 (20)', 'Buurtzorg (14)', 'Silverein (10)'], netwerkPZ: 'Eemland', hospicebedden: '26 (+4)' }
+  ];
+  const samenwerkingsverbanden = ['Regioaanpak ziekenhuiszorg Utrecht & Oncomid', 'Septet', 'Palliateam Midden-Nederland', 'Trijn'];
+  const typen = [
+    { id: 'gemeentes', label: 'Gemeentes' },
+    { id: 'ziekenhuizen', label: 'Ziekenhuizen' },
+    { id: 'huisartsen', label: 'Huisartsenorganisaties' },
+    { id: 'wijkverpleging', label: 'Wijkverpleging' },
+    { id: 'netwerkPZ', label: 'Netwerk PZ' },
+    { id: 'hospicebedden', label: 'Hospicebedden' }
+  ];
+
+  const regioKleur = { uw: '#46571b', u: '#93ab67', zo: '#ebdc86', lek: '#b35c2c', eem: '#3d6b7d' };
+  // Gemeentenamen zoals in de bron-GeoJSON (statnaam) wijken soms af van de Tabel 7-namen
+  // (herindelingen). Vianen ging in 2019 op in Vijfheerenlanden.
+  const gemeenteAlias = { 'Vianen': 'Vijfheerenlanden' };
+
+  const gemeenteRegio = {};
+  regios.forEach(r => {
+    r.gemeentes.forEach(g => { gemeenteRegio[gemeenteAlias[g] || g] = r.id; });
+  });
+
+  const state = { regions: new Set(), types: new Set(), search: '' };
+
+  function fieldText(regio, typeId) {
+    const v = regio[typeId];
+    if (Array.isArray(v)) return v.length ? v.join(', ') : '–';
+    return v || '–';
+  }
+
+  function highlight(text, term) {
+    if (!term) return text;
+    const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
+    return text.replace(re, '<mark>$1</mark>');
+  }
+
+  function matchesSearch(regio, term) {
+    if (!term) return true;
+    const haystack = [regio.naam, ...typen.map(t => fieldText(regio, t.id))].join(' ').toLowerCase();
+    return haystack.includes(term.toLowerCase());
+  }
+
+  // --- Build filter chips ---
+  const regionChipsEl = document.getElementById('region-chips');
+  regios.forEach(r => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.textContent = r.naam;
+    chip.dataset.region = r.id;
+    chip.addEventListener('click', () => {
+      if (state.regions.has(r.id)) state.regions.delete(r.id); else state.regions.add(r.id);
+      render();
+    });
+    regionChipsEl.appendChild(chip);
+  });
+
+  const typeChipsEl = document.getElementById('type-chips');
+  typen.forEach(t => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.textContent = t.label;
+    chip.dataset.type = t.id;
+    chip.addEventListener('click', () => {
+      if (state.types.has(t.id)) state.types.delete(t.id); else state.types.add(t.id);
+      render();
+    });
+    typeChipsEl.appendChild(chip);
+  });
+
+  document.getElementById('search-input').addEventListener('input', e => {
+    state.search = e.target.value.trim();
+    render();
+  });
+
+  // --- Samenwerkingsverbanden (static, altijd zichtbaar) ---
+  const samenwerkingEl = document.getElementById('samenwerking-list');
+  samenwerkingsverbanden.forEach(s => {
+    const span = document.createElement('span');
+    span.textContent = s;
+    samenwerkingEl.appendChild(span);
+  });
+
+  // --- Build region cards (structure once, content on render) ---
+  const gridEl = document.getElementById('region-grid');
+  regios.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'region-card';
+    card.dataset.region = r.id;
+    const h3 = document.createElement('h3');
+    h3.textContent = r.naam;
+    card.appendChild(h3);
+    typen.forEach(t => {
+      const field = document.createElement('div');
+      field.className = 'field';
+      field.dataset.type = t.id;
+      field.innerHTML = '<div class="field-label">' + t.label + '</div><div class="field-value"></div>';
+      card.appendChild(field);
+    });
+    gridEl.appendChild(card);
+  });
+
+  // --- Build table structure ---
+  const theadRow = document.getElementById('tpz-table-head');
+  theadRow.innerHTML = '<th class="row-label-head">Categorie</th>' + regios.map(r => '<th data-region="' + r.id + '">' + r.naam + '</th>').join('');
+
+  const tbody = document.getElementById('tpz-table-body');
+  typen.forEach(t => {
+    const tr = document.createElement('tr');
+    tr.dataset.type = t.id;
+    tr.innerHTML = '<td class="row-label">' + t.label + '</td>' +
+      regios.map(r => '<td data-region="' + r.id + '" data-cell="' + r.id + '-' + t.id + '"></td>').join('');
+    tbody.appendChild(tr);
+  });
+
+  // --- Legend ---
+  const legendEl = document.getElementById('map-legend');
+  regios.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'map-legend-item';
+    item.innerHTML = '<span class="map-legend-dot" style="background:' + regioKleur[r.id] + '"></span>' + r.naam;
+    legendEl.appendChild(item);
+  });
+
+  // --- Map (lazy: pas aangemaakt zodra de TPZ-tab voor het eerst zichtbaar wordt,
+  // anders berekent Leaflet de kaartgrootte verkeerd in een display:none-container) ---
+  let map = null;
+  let gemeenteLayer = null;
+  let mapBounds = null;
+
+  function gemeenteStyle(feature) {
+    const naam = feature.properties.statnaam;
+    const regioId = gemeenteRegio[naam];
+    const term = state.search;
+    const activeRegions = state.regions.size ? state.regions : new Set(regios.map(r => r.id));
+    const regio = regios.find(r => r.id === regioId);
+    const inActiveRegion = activeRegions.has(regioId);
+    const matches = !term || (regio && matchesSearch(regio, term)) || naam.toLowerCase().includes(term.toLowerCase());
+    return {
+      fillColor: regioKleur[regioId],
+      fillOpacity: inActiveRegion ? (term && !matches ? 0.25 : 0.65) : 0.12,
+      color: term && matches && inActiveRegion ? '#2a3410' : '#ffffff',
+      weight: term && matches && inActiveRegion ? 2.5 : 1
+    };
+  }
+
+  function initMap() {
+    if (map) return;
+    map = L.map('tpz-map', { center: [52.09, 5.15], zoom: 9, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      maxZoom: 19
+    }).addTo(map);
+
+    fetch('https://cartomap.github.io/nl/wgs84/gemeente_2025.geojson')
+      .then(res => res.json())
+      .then(data => {
+        const features = data.features.filter(f => gemeenteRegio[f.properties.statnaam]);
+        gemeenteLayer = L.geoJSON(features, {
+          style: gemeenteStyle,
+          onEachFeature: (feature, layer) => {
+            const regioId = gemeenteRegio[feature.properties.statnaam];
+            const regio = regios.find(r => r.id === regioId);
+            layer.bindTooltip(
+              feature.properties.statnaam + '<br><span class="tt-regio">' + (regio ? regio.naam : '') + '</span>',
+              { className: 'gemeente-tooltip', sticky: true }
+            );
+          }
+        }).addTo(map);
+        mapBounds = gemeenteLayer.getBounds();
+        map.invalidateSize();
+        map.fitBounds(mapBounds, { padding: [16, 16], animate: false });
+      });
+  }
+
+  function render() {
+    const term = state.search;
+
+    if (gemeenteLayer) gemeenteLayer.setStyle(gemeenteStyle);
+
+    // chips visual state
+    regionChipsEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', state.regions.has(c.dataset.region)));
+    typeChipsEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', state.types.has(c.dataset.type)));
+
+    const activeRegions = state.regions.size ? state.regions : new Set(regios.map(r => r.id));
+    const activeTypes = state.types.size ? state.types : new Set(typen.map(t => t.id));
+
+    // region cards
+    regios.forEach(r => {
+      const card = gridEl.querySelector('.region-card[data-region="' + r.id + '"]');
+      const regionVisible = activeRegions.has(r.id);
+      const search = matchesSearch(r, term);
+      card.classList.toggle('hidden', !regionVisible);
+      card.classList.toggle('dim', regionVisible && term && !search);
+      typen.forEach(t => {
+        const field = card.querySelector('.field[data-type="' + t.id + '"]');
+        field.classList.toggle('hidden', !activeTypes.has(t.id));
+        field.querySelector('.field-value').innerHTML = highlight(fieldText(r, t.id), term);
+      });
+    });
+
+    // table columns (regions)
+    theadRow.querySelectorAll('th[data-region]').forEach(th => th.classList.toggle('col-hidden', !activeRegions.has(th.dataset.region)));
+    tbody.querySelectorAll('td[data-region]').forEach(td => td.classList.toggle('col-hidden', !activeRegions.has(td.dataset.region)));
+
+    // table rows (types) + cell content
+    typen.forEach(t => {
+      const tr = tbody.querySelector('tr[data-type="' + t.id + '"]');
+      tr.classList.toggle('row-hidden', !activeTypes.has(t.id));
+      regios.forEach(r => {
+        const td = tr.querySelector('td[data-cell="' + r.id + '-' + t.id + '"]');
+        const text = fieldText(r, t.id);
+        const cellMatches = term && text.toLowerCase().includes(term.toLowerCase());
+        td.innerHTML = highlight(text, term);
+        td.classList.toggle('dim', Boolean(term) && !cellMatches);
+      });
+    });
+  }
+
+  render();
+
+  // --- Tab switching ---
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+  const titles = {
+    'tab-websites': { title: "Overzicht van websites &amp; pagina's", sub: 'Verzamelde links naar alle live sites — ingedeeld per doelgroep.' },
+    'tab-tpz': { title: 'Overzicht van het TPZ', sub: "Organisaties en samenwerkingsverbanden per WMO-regio binnen TPZ Midden-Nederland." }
+  };
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => b.classList.toggle('active', b === btn));
+      tabPanels.forEach(p => p.classList.toggle('active', p.id === btn.dataset.tab));
+      const t = titles[btn.dataset.tab];
+      document.getElementById('page-title').innerHTML = t.title;
+      document.getElementById('page-sub').textContent = t.sub;
+      if (btn.dataset.tab === 'tab-tpz') {
+        initMap();
+        setTimeout(() => {
+          if (!map) return;
+          map.invalidateSize();
+          if (mapBounds) map.fitBounds(mapBounds, { padding: [16, 16], animate: false });
+        }, 0);
+      }
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
