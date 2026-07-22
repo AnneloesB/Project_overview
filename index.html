@@ -291,11 +291,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
 <script>
 (function () {
   const regios = [
-    { id: 'uw', naam: 'Utrecht-West', gemeentes: ['De Ronde Venen', 'Montfoort', 'Oudewater', 'Stichtse Vecht', 'Woerden'], ziekenhuizen: ['St. Antonius Utrecht'], huisartsen: ['RegiozorgNU'], wijkverpleging: ['Careyn (20)', 'Buurtzorg (2)', 'De Rijnhoven (2)', 'Maria Dommer', 'Zorggroep De Vechtstreek', 'Fundis', 'De Wulverhorst', 'Zorggroep Sint Maarten'], netwerkPZ: 'Noordwest Utrecht', hospicebedden: '31 (+2)', ambulance: ['RAVU'] },
-    { id: 'u', naam: 'Utrecht', gemeentes: ['Utrecht'], ziekenhuizen: ['UMC Utrecht', 'Diakonessenhuis', 'St. Antonius Utrecht'], huisartsen: ['HA Utrecht Stad', 'RegioZorgNU'], wijkverpleging: ['Careyn (16)', 'Axioncontinu (7)', 'Buurtzorg (6)', 'Vecht & IJssel', 'Bartholomeus Gasthuis', 'Leger des Heils'], netwerkPZ: 'Utrecht Stad', hospicebedden: '6 (+6)', ambulance: ['RAVU'] },
-    { id: 'zo', naam: 'Utrecht Zuid Oost', gemeentes: ['Bunnik', 'De Bilt', 'Utrechtse Heuvelrug', 'Wijk bij Duurstede', 'Zeist'], ziekenhuizen: ['Diakonessenhuis'], huisartsen: ['UNICUM'], wijkverpleging: ['Santé Partners (6)', 'Buurtzorg (5)', 'Silverein (3)', 'Huize het Oosten', 'Accolade', 'Quarijn', 'Warande', 'Charim', 'Zorgspectrum'], netwerkPZ: 'ZO Utrecht', hospicebedden: '31 (+3)', ambulance: ['RAVU'] },
-    { id: 'lek', naam: 'Lekstroom', gemeentes: ['Houten', 'IJsselstein', 'Lopik', 'Nieuwegein', 'Vianen'], ziekenhuizen: ['St. Antonius Nieuwegein'], huisartsen: ['UNICUM'], wijkverpleging: ['Santé Partners (10)', 'Buurtzorg (5)', 'Zorgspectrum (4)'], netwerkPZ: 'Utrecht Zuid', hospicebedden: '15 (+6)', ambulance: ['RAVU'] },
-    { id: 'eem', naam: 'Eemland', gemeentes: ['Amersfoort', 'Baarn', 'Bunschoten', 'Leusden', 'Nijkerk', 'Soest', 'Woudenberg'], ziekenhuizen: ['Meander Amersfoort'], huisartsen: ['HA Eemland'], wijkverpleging: ['Beweging 3.0 (20)', 'Buurtzorg (14)', 'Silverein (10)', 'De Haven', 'Sint Pieters en Bloklands Gasthuis', 'De Koperhorst', 'Amaris', 'De GeZusters'], netwerkPZ: 'Eemland', hospicebedden: '26 (+4)', ambulance: ['RAVU'] }
+    { id: 'uw', naam: 'Utrecht-West', gemeentes: ['De Ronde Venen', 'Montfoort', 'Oudewater', 'Stichtse Vecht', 'Woerden'], ziekenhuizen: ['St. Antonius Utrecht'], huisartsen: ['RegiozorgNU'], wijkverpleging: ['Careyn (20)', 'Buurtzorg (2)', 'De Rijnhoven (2)', 'Maria Dommer', 'Zorggroep De Vechtstreek', 'Fundis', 'De Wulverhorst', 'Zorggroep Sint Maarten'], netwerkPZ: 'Noordwest Utrecht', netwerkcoordinatoren: ['Nienke Goemaat', 'Ineke van Laar'], hospicebedden: '31 (+2)', ambulance: ['RAVU'] },
+    { id: 'u', naam: 'Utrecht', gemeentes: ['Utrecht'], ziekenhuizen: ['UMC Utrecht', 'Diakonessenhuis', 'St. Antonius Utrecht'], huisartsen: ['Sterkzorg/HUS', 'RegioZorgNU'], wijkverpleging: ['Careyn (16)', 'Axioncontinu (7)', 'Buurtzorg (6)', 'Vecht & IJssel', 'Bartholomeus Gasthuis', 'Leger des Heils'], netwerkPZ: 'Utrecht Stad', netwerkcoordinatoren: ['Mirjam Velting', 'Lar Luikx'], hospicebedden: '6 (+6)', ambulance: ['RAVU'] },
+    { id: 'zo', naam: 'Utrecht Zuid Oost', gemeentes: ['Bunnik', 'De Bilt', 'Utrechtse Heuvelrug', 'Wijk bij Duurstede', 'Zeist'], ziekenhuizen: ['Diakonessenhuis'], huisartsen: ['UNICUM'], wijkverpleging: ['Santé Partners (6)', 'Buurtzorg (5)', 'Silverein (3)', 'Huize het Oosten', 'Accolade', 'Quarijn', 'Warande', 'Charim', 'Zorgspectrum', 'Bloezem'], netwerkPZ: 'ZO Utrecht', netwerkcoordinatoren: ['Nienke Goemaat', 'Ineke van Laar'], hospicebedden: '31 (+3)', ambulance: ['RAVU'] },
+    { id: 'lek', naam: 'Lekstroom', gemeentes: ['Houten', 'IJsselstein', 'Lopik', 'Nieuwegein', 'Vianen'], ziekenhuizen: ['St. Antonius Nieuwegein'], huisartsen: ['UNICUM'], wijkverpleging: ['Santé Partners (10)', 'Buurtzorg (5)', 'Zorgspectrum (4)', 'Bloezem'], netwerkPZ: 'Utrecht Zuid', netwerkcoordinatoren: ['Mirjam Velting', 'Lar Luikx'], hospicebedden: '15 (+6)', ambulance: ['RAVU'] },
+    { id: 'eem', naam: 'Eemland', gemeentes: ['Amersfoort', 'Baarn', 'Bunschoten', 'Leusden', 'Nijkerk', 'Soest', 'Woudenberg'], ziekenhuizen: ['Meander Amersfoort'], huisartsen: ['HA Eemland'], wijkverpleging: ['Beweging 3.0 (20)', 'Buurtzorg (14)', 'Silverein (10)', 'De Haven', 'Sint Pieters en Bloklands Gasthuis', 'De Koperhorst', 'Amaris', 'De GeZusters'], netwerkPZ: 'Eemland', netwerkcoordinatoren: ['Willemien Schep'], hospicebedden: '26 (+4)', ambulance: ['RAVU'] }
   ];
   const samenwerkingsverbanden = ['Regioaanpak ziekenhuiszorg Utrecht & Oncomid', 'Septet', 'Palliateam Midden-Nederland', 'Trijn'];
   const typen = [
@@ -305,6 +305,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
     { id: 'ambulance', label: 'Ambulancedienst' },
     { id: 'gemeentes', label: 'Gemeentes' },
     { id: 'netwerkPZ', label: 'Netwerk PZ' },
+    { id: 'netwerkcoordinatoren', label: 'Netwerkcoördinator(en) PZ' },
     { id: 'hospicebedden', label: 'Hospicebedden' }
   ];
   // Typen waarvan de veldwaarden individuele zorgorganisaties zijn (i.t.t. gemeentenamen,
@@ -314,8 +315,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
   const transformatieaanjagers = [
     { naam: 'Woutriëlle de Vogel', organisatie: 'RAVU', type: 'ambulance', regios: ['uw', 'u', 'zo', 'lek', 'eem'] },
     { naam: 'Dietske van Maanen', organisatie: 'HA Eemland', type: 'huisartsen', regios: ['eem'] },
-    { naam: 'Yvonne Pijnacker', organisatie: 'HA Utrecht Stad', type: 'huisartsen', regios: ['u'] },
-    { naam: 'Fleur van Thiel', organisatie: 'HA Utrecht Stad', type: 'huisartsen', regios: ['u'] },
+    { naam: 'Yvonne Pijnacker', organisatie: 'Sterkzorg/HUS', type: 'huisartsen', regios: ['u'] },
+    { naam: 'Fleur van Thiel', organisatie: 'Sterkzorg/HUS', type: 'huisartsen', regios: ['u'] },
     { naam: 'Ella Benedictus', organisatie: 'RegiozorgNU', type: 'huisartsen', regios: ['uw'] },
     { naam: 'Debby van Sleeuwen', organisatie: 'RegiozorgNU', type: 'huisartsen', regios: ['uw'] },
     { naam: 'Heleen Weber', organisatie: 'RegiozorgNU', type: 'huisartsen', regios: ['uw'] },
@@ -338,9 +339,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--groen-xpale); color
     { naam: 'Wilma Verkerk', organisatie: 'Warande', type: 'wijkverpleging', regios: ['zo'] },
     { naam: 'Martine Nagelkerke', organisatie: 'Warande', type: 'wijkverpleging', regios: ['zo'] },
     { naam: 'John Benjamin', organisatie: 'Warande', type: 'wijkverpleging', regios: ['zo'] },
-    { naam: 'Tessa Augustijn', organisatie: 'Zorgspectrum', type: 'wijkverpleging', regios: ['lek', 'zo'] },
-    { naam: 'Rianne van Genderen', organisatie: 'Zorgspectrum', type: 'wijkverpleging', regios: ['lek', 'zo'] },
-    { naam: 'Tjerk van den Berg', organisatie: 'Santé Partners', type: 'wijkverpleging', regios: ['zo', 'lek'] },
+    { naam: 'Tessa Augustijn', organisatie: 'Zorgspectrum', type: 'wijkverpleging', regios: ['lek'] },
+    { naam: 'Rianne van Genderen', organisatie: 'Zorgspectrum', type: 'wijkverpleging', regios: ['lek'] },
+    { naam: 'Rianne Modderkolk', organisatie: 'Zorgspectrum', type: 'wijkverpleging', regios: ['lek'] },
+    { naam: 'Tjerk van den Berg', organisatie: 'Bloezem', type: 'wijkverpleging', regios: ['zo', 'lek'] },
     { naam: 'Karina Crum', organisatie: 'De Haven', type: 'wijkverpleging', regios: ['eem'] },
     { naam: 'Karina Crum', organisatie: 'Sint Pieters en Bloklands Gasthuis', type: 'wijkverpleging', regios: ['eem'] },
     { naam: 'Karina Crum', organisatie: 'De Koperhorst', type: 'wijkverpleging', regios: ['eem'] },
